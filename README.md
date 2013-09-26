@@ -28,7 +28,7 @@ gulp.task('lint', function() {
 
 ## Options
 
-You can pass in a splitter option which defaults to `\r\n`. fileName is mandatory.
+You can pass in any options and it passes them straight to JSHint. Look at their README for more info.
 
 ## LICENSE
 
