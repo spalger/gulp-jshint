@@ -2,32 +2,33 @@ var es = require('event-stream'),
   jshint = require('jshint').JSHINT;
 
 module.exports = function(opt){
-  // clone options
-  if (!opt) opt = {};
-  if (!opt.reporter) opt.reporter = "jshint/src/reporters/default.js";
-  var reporter = require(opt.reporter).reporter;
-  // jshint cries about what we pass to it
-  delete opt.reporter;
-
-  function check (file, cb) {
+  return es.map(function (file, cb) {
     var success = jshint(String(file.contents), opt);
 
-    // linting error - format crap for reporter
+    // send status down-stream
+    file.jshintSuccess = success;
+    file.jshintErrors = 0;
+
+    var data = [jshint.data()];
+    data[0].file = file.path;
+    file.jshintData = data;
+
     if (!success) {
-      var results = jshint.errors.map(function (err) {
-        if (err) {
-          return { file: file.path || "stdin", error: err };
-        }
-      }).filter(function (err) {
+      var results = jshint.errors.filter(function (err) {
         return err;
+      }).map(function (err) {
+        return {
+          file: file.path,
+          error: err,
+          mess: file.path + ': line ' + err.line + ', col ' + err.character + ', code ' + err.code + ', ' + err.reason
+        };
       });
-      var data = [jshint.data()];
-      data[0].file = file.path || "stdin";
-      reporter(results, data, opt);
-      return;
+
+      // send status down-stream
+      file.jshintResults = results;
+      file.jshintErrors = results.length;
     }
 
     cb(null, file);
-  }
-  return es.map(check);
+  });
 };

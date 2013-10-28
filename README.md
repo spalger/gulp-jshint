@@ -22,13 +22,26 @@
 var concat = require('gulp-jshint');
 
 gulp.task('lint', function() {
-  gulp.files('./lib/*.js').pipe(jshint());
+  gulp.files('./lib/*.js')
+    .pipe(jshint())
+    .pipe(YOUR_REPORTER_HERE());
 });
 ```
 
 ## Options
 
 You can pass in any options and it passes them straight to JSHint. Look at their README for more info.
+
+## Results
+
+Adds the following properties to the file object:
+
+```javascript
+  file.jshintSuccess = true; // or false
+  file.jshintErrors = 0; // number of errors returned by JSHint
+  file.jshintResults = []; // JSHint errors, see [http://jshint.com/docs/reporters/](http://jshint.com/docs/reporters/)
+  file.jshintData = []; // JSHint returns details about implied globals, cyclomatic complexity, etc
+```
 
 ## LICENSE
 
