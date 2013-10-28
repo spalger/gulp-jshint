@@ -1,13 +1,13 @@
 var es = require('event-stream'),
-  clone = require('clone'),
   jshint = require('jshint').JSHINT;
 
 module.exports = function(opt){
   // clone options
-  opt = opt ? clone(opt) : {};
+  if (!opt) opt = {};
   if (!opt.reporter) opt.reporter = "jshint/src/reporters/default.js";
   var reporter = require(opt.reporter).reporter;
-  delete opt.reporter; //jshint cries about what we pass to it
+  // jshint cries about what we pass to it
+  delete opt.reporter;
 
   function check (file, cb) {
     var success = jshint(String(file.contents), opt);
