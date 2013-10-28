@@ -18,6 +18,8 @@ module.exports = function(opt){
         if (err) {
           return { file: file.path || "stdin", error: err };
         }
+      }).filter(function (err) {
+        return err;
       });
       var data = [jshint.data()];
       data[0].file = file.path || "stdin";
