@@ -24,7 +24,7 @@ var concat = require('gulp-jshint');
 gulp.task('lint', function() {
   gulp.files('./lib/*.js')
     .pipe(jshint())
-    .pipe(YOUR_REPORTER_HERE());
+    .pipe(jshint.reporter('YOUR_REPORTER_HERE'));
 });
 ```
 
@@ -38,10 +38,17 @@ Adds the following properties to the file object:
 
 ```javascript
   file.jshint.success = true; // or false
-  file.jshint.errors = 0; // number of errors returned by JSHint
+  file.jshint.errorCount = 0; // number of errors returned by JSHint
   file.jshint.results = []; // JSHint errors, see [http://jshint.com/docs/reporters/](http://jshint.com/docs/reporters/)
   file.jshint.data = []; // JSHint returns details about implied globals, cyclomatic complexity, etc
+  file.jshint.opt = {}; // The options you passed to JSHint
 ```
+
+## Reporters
+
+You can choose any [JSHint reporter](https://github.com/jshint/jshint/tree/2.x/src/reporters)
+when you call `.pipe(jshint.reporter('default'))` or you can use a simple reporter similar to
+the default reporter: `.pipe(jshint.reporterSimple())`
 
 ## LICENSE
 
