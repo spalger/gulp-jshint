@@ -37,10 +37,10 @@ You can pass in any options and it passes them straight to JSHint. Look at their
 Adds the following properties to the file object:
 
 ```javascript
-  file.jshintSuccess = true; // or false
-  file.jshintErrors = 0; // number of errors returned by JSHint
-  file.jshintResults = []; // JSHint errors, see [http://jshint.com/docs/reporters/](http://jshint.com/docs/reporters/)
-  file.jshintData = []; // JSHint returns details about implied globals, cyclomatic complexity, etc
+  file.jshint.success = true; // or false
+  file.jshint.errors = 0; // number of errors returned by JSHint
+  file.jshint.results = []; // JSHint errors, see [http://jshint.com/docs/reporters/](http://jshint.com/docs/reporters/)
+  file.jshint.data = []; // JSHint returns details about implied globals, cyclomatic complexity, etc
 ```
 
 ## LICENSE

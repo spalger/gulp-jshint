@@ -2,21 +2,29 @@ var es = require('event-stream'),
   jshint = require('jshint').JSHINT;
 
 module.exports = function(opt){
+  var reporter;
+  if (opt.reporter) {
+    reporter = require(opt.reporter).reporter;
+    // it cries about what we pass to it
+    delete opt.reporter;
+  }
+
   return es.map(function (file, cb) {
     var success = jshint(String(file.contents), opt);
 
-    // send status down-stream
-    file.jshintSuccess = success;
-    file.jshintErrors = 0;
-
     var data = [jshint.data()];
     data[0].file = file.path;
-    file.jshintData = data;
+
+    // send status down-stream
+
+    file.jshint = {
+      success: success,
+      errors: 0,
+      data: data
+    };
 
     if (!success) {
-      var results = jshint.errors.filter(function (err) {
-        return err;
-      }).map(function (err) {
+      var results = jshint.errors.map(function (err) {
         return {
           file: file.path,
           error: err,
@@ -25,8 +33,13 @@ module.exports = function(opt){
       });
 
       // send status down-stream
-      file.jshintResults = results;
-      file.jshintErrors = results.length;
+      file.jshint.results = results;
+      file.jshint.errors = results.length;
+
+      // call reporter if any
+      if (reporter) {
+        reporter(jshint.errors, data, opt);
+      }
     }
 
     cb(null, file);
