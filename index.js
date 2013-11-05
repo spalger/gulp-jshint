@@ -36,7 +36,7 @@ gulpJSHint.reporter = function (reportWriter) {
   if (!reportWriter) {
     return gulpJSHint.reporterSimple();
   }
-  var rpt = require(reportWriter).reporter;
+  var rpt = require('jshint/src/reporters/'+reportWriter).reporter;
   if (!rpt) {
     throw new Error('invalid reporter: '+reportWriter);
   }
