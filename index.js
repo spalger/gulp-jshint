@@ -26,7 +26,9 @@ var gulpJSHint = function(opt){
 gulpJSHint.reporterSimple = function () {
   return es.map(function (file, cb) {
     file.jshint.results.forEach(function (err) {
-      console.log(file.path + ': line ' + err.line + ', col ' + err.character + ', code ' + err.code + ', ' + err.reason);
+      if (err) {
+        console.log(file.path + ': line ' + err.line + ', col ' + err.character + ', code ' + err.code + ', ' + err.reason);
+      }
     });
     cb(null, file);
   });
