@@ -19,16 +19,57 @@
 ## Usage
 
 ```javascript
-var concat = require('gulp-jshint');
+var jshint = require('gulp-jshint');
 
 gulp.task('lint', function() {
-  gulp.files('./lib/*.js').pipe(jshint());
+  gulp.files('./lib/*.js')
+    .pipe(jshint())
+    .pipe(jshint.reporter('YOUR_REPORTER_HERE'));
 });
 ```
 
 ## Options
 
 You can pass in any options and it passes them straight to JSHint. Look at their README for more info.
+
+## Results
+
+Adds the following properties to the file object:
+
+```javascript
+  file.jshint.success = true; // or false
+  file.jshint.errorCount = 0; // number of errors returned by JSHint
+  file.jshint.results = []; // JSHint errors, see [http://jshint.com/docs/reporters/](http://jshint.com/docs/reporters/)
+  file.jshint.data = []; // JSHint returns details about implied globals, cyclomatic complexity, etc
+  file.jshint.opt = {}; // The options you passed to JSHint
+```
+
+## Reporters
+
+You can choose any [JSHint reporter](https://github.com/jshint/jshint/tree/master/src/reporters)
+when you call `.pipe(jshint.reporter('default'))` or you can use a simple reporter similar to
+the default reporter: `.pipe(jshint.reporterSimple())` or you can create your own reporter:
+
+```javascript
+var jshint = require('gulp-jshint');
+var es = require('event-stream');
+
+gulp.task('lint', function() {
+  gulp.files('./lib/*.js')
+    .pipe(jshint())
+    .pipe(es.map(function (file, cb) {
+      if (!file.jshint.success) {
+        console.log('JSHINT fail in '+file.path);
+        file.jshint.results.forEach(function (err) {
+          if (err) {
+            console.log(' '+file.path + ': line ' + err.line + ', col ' + err.character + ', code ' + err.code + ', ' + err.reason);
+          }
+        });
+      }
+      cb(null, file);
+    }));
+});
+```
 
 ## LICENSE
 

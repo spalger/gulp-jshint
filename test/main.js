@@ -4,32 +4,115 @@ require('mocha');
 
 describe('gulp-jshint', function() {
   describe('jshint()', function() {
-    it('should jshint two files', function(done) {
-      var stream = jshint();
+    it('file should pass through', function(done) {
+      var a = 0;
+
       var fakeFile = {
-        path: "/home/contra/test/file.js",
+        path: "./test/fixture/file.js",
         shortened: "file.js",
         contents: new Buffer("wadup();")
       };
 
-      var fakeFile2 = {
-        path: "/home/contra/test/file2.js",
-        shortened: "file2.js",
-        contents: new Buffer("doe =")
-      };
-
+      var stream = jshint();
       stream.on('data', function(newFile){
         should.exist(newFile);
         should.exist(newFile.path);
         should.exist(newFile.shortened);
         should.exist(newFile.contents);
-        newFile.path.should.equal("/home/contra/test/file.js");
+        newFile.path.should.equal("./test/fixture/file.js");
         newFile.shortened.should.equal("file.js");
-        String(newFile.contents).should.equal("wadup();");
+        ++a;
+      });
+
+      stream.once('end', function () {
+        a.should.equal(1);
         done();
       });
+
+      stream.write(fakeFile);
+      stream.end();
+    });
+    it('should jshint two files', function(done) {
+      var a = 0;
+
+      var fakeFile = {
+        path: "./test/fixture/file.js",
+        shortened: "file.js",
+        contents: new Buffer("wadup();")
+      };
+
+      var fakeFile2 = {
+        path: "./test/fixture/file2.js",
+        shortened: "file2.js",
+        contents: new Buffer("wadup();")
+      };
+
+      var stream = jshint();
+      stream.on('data', function(newFile){
+        ++a;
+      });
+
+      stream.once('end', function () {
+        a.should.equal(2);
+        done();
+      });
+
       stream.write(fakeFile);
       stream.write(fakeFile2);
+      stream.end();
+    });
+    it('should send success status', function(done) {
+      var a = 0;
+
+      var fakeFile = {
+        path: "./test/fixture/file.js",
+        shortened: "file.js",
+        contents: new Buffer("wadup();")
+      };
+
+      var stream = jshint();
+      stream.on('data', function (newFile) {
+        ++a;
+        should.exist(newFile.jshint.success);
+        newFile.jshint.success.should.equal(true);
+        should.exist(newFile.jshint.errorCount);
+        newFile.jshint.errorCount.should.equal(0);
+        should.exist(newFile.jshint.results);
+        newFile.jshint.results.length.should.equal(0);
+      });
+      stream.once('end', function () {
+        a.should.equal(1);
+        done();
+      });
+
+      stream.write(fakeFile);
+      stream.end();
+    });
+    it('should send failure status', function(done) {
+      var a = 0, expectedErrorCount = 3; // FRAGILE: This document could get worse with time
+
+      var fakeFile = {
+        path: "./test/fixture/file.js",
+        shortened: "file.js",
+        contents: new Buffer("doe =")
+      };
+
+      var stream = jshint();
+      stream.on('data', function (newFile) {
+        ++a;
+        should.exist(newFile.jshint.success);
+        newFile.jshint.success.should.equal(false);
+        should.exist(newFile.jshint.errorCount);
+        newFile.jshint.errorCount.should.equal(expectedErrorCount);
+        should.exist(newFile.jshint.results);
+        newFile.jshint.results.length.should.equal(expectedErrorCount);
+      });
+      stream.once('end', function () {
+        a.should.equal(1);
+        done();
+      });
+
+      stream.write(fakeFile);
       stream.end();
     });
   });
