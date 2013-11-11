@@ -19,7 +19,7 @@
 ## Usage
 
 ```javascript
-var concat = require('gulp-jshint');
+var jshint = require('gulp-jshint');
 
 gulp.task('lint', function() {
   gulp.files('./lib/*.js')
@@ -46,9 +46,30 @@ Adds the following properties to the file object:
 
 ## Reporters
 
-You can choose any [JSHint reporter](https://github.com/jshint/jshint/tree/2.x/src/reporters)
+You can choose any [JSHint reporter](https://github.com/jshint/jshint/tree/master/src/reporters)
 when you call `.pipe(jshint.reporter('default'))` or you can use a simple reporter similar to
-the default reporter: `.pipe(jshint.reporterSimple())`
+the default reporter: `.pipe(jshint.reporterSimple())` or you can create your own reporter:
+
+```javascript
+var jshint = require('gulp-jshint');
+var es = require('event-stream');
+
+gulp.task('lint', function() {
+  gulp.files('./lib/*.js')
+    .pipe(jshint())
+    .pipe(es.map(function (file, cb) {
+      if (!file.jshint.success) {
+        console.log('JSHINT fail in '+file.path);
+        file.jshint.results.forEach(function (err) {
+          if (err) {
+            console.log(' '+file.path + ': line ' + err.line + ', col ' + err.character + ', code ' + err.code + ', ' + err.reason);
+          }
+        });
+      }
+      cb(null, file);
+    }));
+});
+```
 
 ## LICENSE
 
