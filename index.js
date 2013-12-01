@@ -30,7 +30,7 @@ var formatOutput = function(success, file, opt) {
   return output;
 };
 
-var gulpJSHint = function(opt){
+var jshintPlugin = function(opt){
   return es.map(function (file, cb) {
     var success = jshint(String(file.contents), opt);
 
@@ -41,33 +41,24 @@ var gulpJSHint = function(opt){
   });
 };
 
-gulpJSHint.reporterSimple = function () {
-  return es.map(function (file, cb) {
-    file.jshint.results.forEach(function (err) {
-      if (err) {
-        console.log(file.path + ': line ' + err.line + ', col ' + err.character + ', code ' + err.code + ', ' + err.reason);
-      }
-    });
-    cb(null, file);
-  });
-};
-
-gulpJSHint.reporter = function (reportWriter) {
-  if (!reportWriter) {
-    return gulpJSHint.reporterSimple();
-  }
+jshintPlugin.reporter = function (reportWriter) {
+  if (!reportWriter) reportWriter = 'default';
 
   // load jshint reporter
-  // legacy jshint reporters get a shimmed format
   var rpt = require('jshint/src/reporters/'+reportWriter).reporter;
   if (!rpt) {
     throw new Error('invalid reporter: '+reportWriter);
   }
 
+  // return stream that reports stuff
   return es.map(function (file, cb) {
+    // nothing to report
+    // or no errors
+    if (!file.jshint || file.jshint.success) return cb(null, file);
+
     rpt(file.jshint.results, file.jshint.data, file.jshint.opt);
     return cb(null, file);
   });
 };
 
-module.exports = gulpJSHint;
+module.exports = jshintPlugin;

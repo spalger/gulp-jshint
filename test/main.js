@@ -75,10 +75,9 @@ describe('gulp-jshint', function() {
         ++a;
         should.exist(newFile.jshint.success);
         newFile.jshint.success.should.equal(true);
-        should.exist(newFile.jshint.errorCount);
-        newFile.jshint.errorCount.should.equal(0);
-        should.exist(newFile.jshint.results);
-        newFile.jshint.results.length.should.equal(0);
+        should.not.exist(newFile.jshint.results);
+        should.not.exist(newFile.jshint.data);
+        should.not.exist(newFile.jshint.opt);
       });
       stream.once('end', function () {
         a.should.equal(1);
@@ -89,7 +88,7 @@ describe('gulp-jshint', function() {
       stream.end();
     });
     it('should send failure status', function(done) {
-      var a = 0, expectedErrorCount = 3; // FRAGILE: This document could get worse with time
+      var a = 0;
 
       var fakeFile = {
         path: "./test/fixture/file.js",
@@ -102,10 +101,8 @@ describe('gulp-jshint', function() {
         ++a;
         should.exist(newFile.jshint.success);
         newFile.jshint.success.should.equal(false);
-        should.exist(newFile.jshint.errorCount);
-        newFile.jshint.errorCount.should.equal(expectedErrorCount);
         should.exist(newFile.jshint.results);
-        newFile.jshint.results.length.should.equal(expectedErrorCount);
+        should.exist(newFile.jshint.data);
       });
       stream.once('end', function () {
         a.should.equal(1);
