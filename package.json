@@ -1,7 +1,7 @@
 {
    "name":"gulp-jshint",
    "description":"JSHint plugin for gulp",
-   "version":"1.0.0",
+   "version":"1.1.0",
    "homepage":"http://github.com/wearefractal/gulp-jshint",
    "repository":"git://github.com/wearefractal/gulp-jshint.git",
    "author":"Fractal <contact@wearefractal.com> (http://wearefractal.com/)",
