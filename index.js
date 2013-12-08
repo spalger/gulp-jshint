@@ -3,7 +3,8 @@
 "use strict";
 
 var es = require('event-stream'),
-  jshint = require('jshint').JSHINT;
+  jshint = require('jshint').JSHINT,
+  jshintcli = require('jshint/src/cli');
 
 var formatOutput = function(success, file, opt) {
   // no error
@@ -31,8 +32,20 @@ var formatOutput = function(success, file, opt) {
 };
 
 var jshintPlugin = function(opt){
+  var globals = {};
+
+  if (typeof opt === 'string'){
+    opt = jshintcli.loadConfig(opt);
+    delete opt.dirname;
+  }
+
+  if (opt && opt.globals) {
+    globals = opt.globals;
+    delete opt.globals;
+  }
+
   return es.map(function (file, cb) {
-    var success = jshint(String(file.contents), opt);
+    var success = jshint(String(file.contents), opt, globals);
 
     // send status down-stream
     file.jshint = formatOutput(success, file, opt);
