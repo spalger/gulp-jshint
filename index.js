@@ -57,14 +57,17 @@ var jshintPlugin = function(opt){
   });
 };
 
-jshintPlugin.reporter = function (reportWriter) {
-  if (!reportWriter) reportWriter = 'default';
-
-  // load jshint reporter
+jshintPlugin.reporter = function (reporter) {
+  if (!reporter) reporter = 'default';
   var rpt;
-  if (typeof reportWriter === 'string') {
+  // support custom reporters
+  if (typeof reporter === 'function') rpt = reporter;
+  if (typeof reporter === 'object') rpt = reporter.reporter;
+
+  // load jshint built-in reporter
+  if (typeof reporter === 'string') {
     try {
-      rpt = require('jshint/src/reporters/'+reportWriter).reporter;
+      rpt = require('jshint/src/reporters/'+reporter).reporter;
     } catch (err) {}
   }
 

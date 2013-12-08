@@ -30,7 +30,7 @@ gulp.task('lint', function() {
 
 ## Options
 
-You can pass in any options and it passes them straight to JSHint. Look at their README for more info.
+You can pass in any options and it passes them straight to JSHint. Look at their README for more info. You can also pass in the location of your jshintrc file as a string and it will load options from it.
 
 ## Results
 
@@ -48,11 +48,27 @@ Adds the following properties to the file object:
 
 ### JSHint reporters
 
+#### Built-in
+
 You can choose any [JSHint reporter](https://github.com/jshint/jshint/tree/master/src/reporters)
 when you call
 
 ```javascript
-.pipe(jshint.reporter('default'))
+stuff
+  .pipe(jshint())
+  .pipe(jshint.reporter('default'))
+```
+
+#### External
+
+Let's use [jshint-stylish](https://github.com/sindresorhus/jshint-stylish) as an example
+
+```javascript
+var stylish = require('jshint-stylish');
+
+stuff
+  .pipe(jshint())
+  .pipe(jshint.reporter(stylish))
 ```
 
 ### Custom Reporters
