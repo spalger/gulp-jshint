@@ -46,28 +46,39 @@ Adds the following properties to the file object:
 
 ## Reporters
 
+### JSHint reporters
+
 You can choose any [JSHint reporter](https://github.com/jshint/jshint/tree/master/src/reporters)
-when you call `.pipe(jshint.reporter('default'))` or you can use a simple reporter similar to
-the default reporter: `.pipe(jshint.reporterSimple())` or you can create your own reporter:
+when you call
+
+```javascript
+.pipe(jshint.reporter('default'))
+```
+
+### Custom Reporters
+
+Custom reporters don't interact with this module at all. jshint will add some attributes to the file object and you can add a custom reporter downstream.
 
 ```javascript
 var jshint = require('gulp-jshint');
 var es = require('event-stream');
 
+var myReporter = es.map(function (file, cb) {
+  if (!file.jshint.success) {
+    console.log('JSHINT fail in '+file.path);
+    file.jshint.results.forEach(function (err) {
+      if (err) {
+        console.log(' '+file.path + ': line ' + err.line + ', col ' + err.character + ', code ' + err.code + ', ' + err.reason);
+      }
+    });
+  }
+  cb(null, file);
+});
+
 gulp.task('lint', function() {
   gulp.files('./lib/*.js')
     .pipe(jshint())
-    .pipe(es.map(function (file, cb) {
-      if (!file.jshint.success) {
-        console.log('JSHINT fail in '+file.path);
-        file.jshint.results.forEach(function (err) {
-          if (err) {
-            console.log(' '+file.path + ': line ' + err.line + ', col ' + err.character + ', code ' + err.code + ', ' + err.reason);
-          }
-        });
-      }
-      cb(null, file);
-    }));
+    .pipe(myReporter);
 });
 ```
 

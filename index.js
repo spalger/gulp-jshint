@@ -8,18 +8,20 @@ var es = require('event-stream'),
 
 var formatOutput = function(success, file, opt) {
   // no error
-  if (success) return {success:success};
+  if (success) return {success: success};
+
+  var filePath = (file.path || "stdin");
 
   // errors
   var results = jshint.errors.map(function (err) {
     if (!err) return;
-    return { file: file.path || "stdin", error: err };
+    return {file: filePath, error: err};
   }).filter(function (err) {
     return err;
   });
 
   var data = [jshint.data()];
-  data[0].file = file.path || "stdin";
+  data[0].file = filePath;
 
   var output = {
     success: success,
@@ -32,6 +34,7 @@ var formatOutput = function(success, file, opt) {
 };
 
 var jshintPlugin = function(opt){
+  if (!opt) opt = {};
   var globals = {};
 
   if (typeof opt === 'string'){
@@ -39,7 +42,7 @@ var jshintPlugin = function(opt){
     delete opt.dirname;
   }
 
-  if (opt && opt.globals) {
+  if (opt.globals) {
     globals = opt.globals;
     delete opt.globals;
   }
@@ -58,9 +61,15 @@ jshintPlugin.reporter = function (reportWriter) {
   if (!reportWriter) reportWriter = 'default';
 
   // load jshint reporter
-  var rpt = require('jshint/src/reporters/'+reportWriter).reporter;
-  if (!rpt) {
-    throw new Error('invalid reporter: '+reportWriter);
+  var rpt;
+  if (typeof reportWriter === 'string') {
+    try {
+      rpt = require('jshint/src/reporters/'+reportWriter).reporter;
+    } catch (err) {}
+  }
+
+  if (typeof rpt === 'undefined') {
+    throw new Error('Invalid reporter');
   }
 
   // return stream that reports stuff
