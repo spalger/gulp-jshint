@@ -123,7 +123,7 @@ describe('gulp-jshint', function() {
       stream.end();
     });
 
-    it('should load jshint file', function(done) {
+    it('should load jshint file and fail', function(done) {
       var a = 0;
 
       var fakeFile = new gutil.File({
@@ -151,5 +151,34 @@ describe('gulp-jshint', function() {
       stream.write(fakeFile);
       stream.end();
     });
+
+    it('should load jshint file and fail', function(done) {
+      var a = 0;
+
+      var fakeFile = new gutil.File({
+        path: "./test/fixture/file.js",
+        cwd: "./test/",
+        base: "./test/fixture/",
+        contents: new Buffer("wadup = 123;")
+      });
+
+      var stream = jshint(path.join(__dirname, './samplejshint2'));
+      stream.on('data', function (newFile) {
+        ++a;
+        should.exist(newFile.jshint.success);
+        newFile.jshint.success.should.equal(true);
+        should.not.exist(newFile.jshint.results);
+        should.not.exist(newFile.jshint.data);
+        should.not.exist(newFile.jshint.opt);
+      });
+      stream.once('end', function () {
+        a.should.equal(1);
+        done();
+      });
+
+      stream.write(fakeFile);
+      stream.end();
+    });
+
   });
 });
