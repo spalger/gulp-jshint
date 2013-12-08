@@ -44,8 +44,20 @@ var jshintPlugin = function(opt){
 jshintPlugin.reporter = function (reportWriter) {
   if (!reportWriter) reportWriter = 'default';
 
+  var rpt = null;
   // load jshint reporter
-  var rpt = require('jshint/src/reporters/'+reportWriter).reporter;
+  switch (reportWriter){
+    case 'default':
+    case 'checkstyle':
+    case 'jslint_xml':
+    case 'non_error':
+    rpt = require('jshint/src/reporters/'+reportWriter).reporter
+    break;
+
+    default:
+    rpt = require(reportWriter).reporter;
+    break;
+  }
   if (!rpt) {
     throw new Error('invalid reporter: '+reportWriter);
   }

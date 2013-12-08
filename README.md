@@ -3,7 +3,7 @@
 ## Information
 
 <table>
-<tr> 
+<tr>
 <td>Package</td><td>gulp-jshint</td>
 </tr>
 <tr>
@@ -68,6 +68,25 @@ gulp.task('lint', function() {
       }
       cb(null, file);
     }));
+});
+```
+
+or use a external reporter:
+For exemple for [Stylish reporter for JSHint](https://github.com/sindresorhus/jshint-stylish), install it
+
+```sh
+npm install --save-dev jshint-stylish
+```
+
+then use it
+
+```javascript
+var jshint = require('gulp-jshint');
+
+gulp.task('lint', function() {
+  gulp.src('./lib/*.js')
+    .pipe(jshint())
+    .pipe(jshint.reporter(require('jshint-stylish')));
 });
 ```
 
