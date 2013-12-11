@@ -71,6 +71,16 @@ stuff
   .pipe(jshint.reporter(stylish))
 ```
 
+- OR -
+
+```javascript
+stuff
+  .pipe(jshint())
+  .pipe(jshint.reporter('jshint-stylish'))
+```
+
+JSHint plugins have no good module format so I tried to support all of them I saw in the wild. Hopefully it worked, but if a JSHint plugin isn't working with this library feel free to open an issue.
+
 ### Custom Reporters
 
 Custom reporters don't interact with this module at all. jshint will add some attributes to the file object and you can add a custom reporter downstream.

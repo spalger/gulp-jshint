@@ -57,28 +57,39 @@ var jshintPlugin = function(opt){
   });
 };
 
-jshintPlugin.reporter = function (reporter) {
-  if (!reporter) reporter = 'default';
-  var rpt;
-  // support custom reporters
-  if (typeof reporter === 'function') rpt = reporter;
-  if (typeof reporter === 'object') rpt = reporter.reporter;
+jshintPlugin.loadReporter = function(reporter) {
+  // we want the function
+  if (typeof reporter === 'function') return reporter;
 
-  // load jshint built-in reporter
+  // object reporters
+  if (typeof reporter === 'object' && typeof reporter.reporter === 'function') return jshintPlugin.loadReporter(reporter.reporter);
+
+  // load jshint built-in reporters
   if (typeof reporter === 'string') {
     try {
-      rpt = require('jshint/src/reporters/'+reporter).reporter;
+      return jshintPlugin.loadReporter(require('jshint/src/reporters/'+reporter));
     } catch (err) {}
   }
 
-  if (typeof rpt === 'undefined') {
+  // load full-path or module reporters
+  if (typeof reporter === 'string') {
+    try {
+      return jshintPlugin.loadReporter(require(reporter));
+    } catch (err) {}
+  }
+};
+
+jshintPlugin.reporter = function (reporter) {
+  if (!reporter) reporter = 'default';
+  var rpt = jshintPlugin.loadReporter(reporter);
+
+  if (typeof rpt !== 'function') {
     throw new Error('Invalid reporter');
   }
 
   // return stream that reports stuff
   return es.map(function (file, cb) {
-    // nothing to report
-    // or no errors
+    // nothing to report or no errors
     if (!file.jshint || file.jshint.success) return cb(null, file);
 
     rpt(file.jshint.results, file.jshint.data, file.jshint.opt);
