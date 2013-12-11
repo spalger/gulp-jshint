@@ -67,7 +67,7 @@ jshintPlugin.reporter = function (reporter) {
   // load jshint built-in reporter
   if (typeof reporter === 'string') {
     try {
-      rpt = require('jshint/src/reporters/'+reporter).reporter;
+      rpt = ('default' === reporter) ? require('jshint/src/reporters/'+reporter).reporter : require(reporter).reporter;
     } catch (err) {}
   }
 
