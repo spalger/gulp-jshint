@@ -10,7 +10,7 @@
     "gulpplugin"
   ],
   "dependencies": {
-    "event-stream": "~3.0.20",
+    "map-stream": "~0.0.4",
     "jshint": "~2.4.0"
   },
   "devDependencies": {
