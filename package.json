@@ -16,7 +16,7 @@
   "devDependencies": {
     "mocha": "*",
     "should": "*",
-    "gulp-util": "~2.2.1"
+    "gulp-util": "~2.2.2"
   },
   "scripts": {
     "test": "mocha --reporter spec"
