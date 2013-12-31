@@ -48,7 +48,11 @@ var jshintPlugin = function(opt){
   }
 
   return es.map(function (file, cb) {
-    var success = jshint(String(file.contents), opt, globals);
+    if (file.isNull()) return cb(null, file); // pass along
+    if (file.isStream()) return cb(new Error("gulp-less: Streaming not supported"));
+
+    var str = file.contents.toString('utf8');
+    var success = jshint(str, opt, globals);
 
     // send status down-stream
     file.jshint = formatOutput(success, file, opt);
