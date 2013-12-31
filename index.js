@@ -2,7 +2,7 @@
 
 "use strict";
 
-var es = require('event-stream'),
+var map = require('map-stream'),
   jshint = require('jshint').JSHINT,
   jshintcli = require('jshint/src/cli');
 
@@ -47,7 +47,7 @@ var jshintPlugin = function(opt){
     delete opt.globals;
   }
 
-  return es.map(function (file, cb) {
+  return map(function (file, cb) {
     if (file.isNull()) return cb(null, file); // pass along
     if (file.isStream()) return cb(new Error("gulp-less: Streaming not supported"));
 
@@ -92,7 +92,7 @@ jshintPlugin.reporter = function (reporter) {
   }
 
   // return stream that reports stuff
-  return es.map(function (file, cb) {
+  return map(function (file, cb) {
     // nothing to report or no errors
     if (!file.jshint || file.jshint.success) return cb(null, file);
 
