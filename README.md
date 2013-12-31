@@ -3,7 +3,7 @@
 ## Information
 
 <table>
-<tr> 
+<tr>
 <td>Package</td><td>gulp-jshint</td>
 </tr>
 <tr>
@@ -87,9 +87,9 @@ Custom reporters don't interact with this module at all. jshint will add some at
 
 ```javascript
 var jshint = require('gulp-jshint');
-var es = require('event-stream');
+var map = require('map-stream');
 
-var myReporter = es.map(function (file, cb) {
+var myReporter = map(function (file, cb) {
   if (!file.jshint.success) {
     console.log('JSHINT fail in '+file.path);
     file.jshint.results.forEach(function (err) {
