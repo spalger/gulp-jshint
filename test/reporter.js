@@ -10,10 +10,10 @@ describe('gulp-jshint', function() {
       var a = 0;
 
       var fakeFile = new gutil.File({
-        path: "./test/fixture/file.js",
-        cwd: "./test/",
-        base: "./test/fixture/",
-        contents: new Buffer("wadup();")
+        path: './test/fixture/file.js',
+        cwd: './test/',
+        base: './test/fixture/',
+        contents: new Buffer('wadup();')
       });
 
       var stream = jshint.reporter();
@@ -22,8 +22,8 @@ describe('gulp-jshint', function() {
         should.exist(newFile.path);
         should.exist(newFile.relative);
         should.exist(newFile.contents);
-        newFile.path.should.equal("./test/fixture/file.js");
-        newFile.relative.should.equal("file.js");
+        newFile.path.should.equal('./test/fixture/file.js');
+        newFile.relative.should.equal('file.js');
         ++a;
       });
 
@@ -38,10 +38,10 @@ describe('gulp-jshint', function() {
 
     it('file should trigger reporter when .jshint exists', function(done) {
       var fakeFile = new gutil.File({
-        path: "./test/fixture/file.js",
-        cwd: "./test/",
-        base: "./test/fixture/",
-        contents: new Buffer("wadup();")
+        path: './test/fixture/file.js',
+        cwd: './test/',
+        base: './test/fixture/',
+        contents: new Buffer('wadup();')
       });
 
       fakeFile.jshint = {

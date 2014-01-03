@@ -28,6 +28,15 @@ gulp.task('lint', function() {
 });
 ```
 
+## Options
+
+Plugin options:
+
+- `fail`
+  - Default is `false`
+  - When `true` this will cause jshint to emit an error event on warnings which will exit the process with an error unless handled
+
+
 You can pass in any other options and it passes them straight to JSHint. Look at their README for more info. You can also pass in the location of your jshintrc file as a string and it will load options from it.
 
 ## Results

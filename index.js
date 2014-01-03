@@ -1,16 +1,18 @@
 /*jshint node:true */
 
-"use strict";
+'use strict';
 
-var map = require('map-stream'),
-  jshint = require('jshint').JSHINT,
-  jshintcli = require('jshint/src/cli');
+var map = require('map-stream');
+var jshint = require('jshint').JSHINT;
+var jshintcli = require('jshint/src/cli');
+var gutil = require('gulp-util');
+var PluginError = gutil.PluginError;
 
 var formatOutput = function(success, file, opt) {
   // no error
   if (success) return {success: success};
 
-  var filePath = (file.path || "stdin");
+  var filePath = (file.path || 'stdin');
 
   // errors
   var results = jshint.errors.map(function (err) {
@@ -49,7 +51,7 @@ var jshintPlugin = function(opt){
 
   return map(function (file, cb) {
     if (file.isNull()) return cb(null, file); // pass along
-    if (file.isStream()) return cb(new Error("gulp-less: Streaming not supported"));
+    if (file.isStream()) return cb(new PluginError('gulp-jshint', 'Streaming not supported'));
 
     var str = file.contents.toString('utf8');
     var success = jshint(str, opt, globals);

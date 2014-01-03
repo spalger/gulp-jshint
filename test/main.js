@@ -10,10 +10,10 @@ describe('gulp-jshint', function() {
       var a = 0;
 
       var fakeFile = new gutil.File({
-        path: "./test/fixture/file.js",
-        cwd: "./test/",
-        base: "./test/fixture/",
-        contents: new Buffer("wadup();")
+        path: './test/fixture/file.js',
+        cwd: './test/',
+        base: './test/fixture/',
+        contents: new Buffer('wadup();')
       });
 
       var stream = jshint();
@@ -22,8 +22,8 @@ describe('gulp-jshint', function() {
         should.exist(newFile.path);
         should.exist(newFile.relative);
         should.exist(newFile.contents);
-        newFile.path.should.equal("./test/fixture/file.js");
-        newFile.relative.should.equal("file.js");
+        newFile.path.should.equal('./test/fixture/file.js');
+        newFile.relative.should.equal('file.js');
         ++a;
       });
 
@@ -40,17 +40,17 @@ describe('gulp-jshint', function() {
       var a = 0;
 
       var fakeFile = new gutil.File({
-        path: "./test/fixture/file.js",
-        cwd: "./test/",
-        base: "./test/fixture/",
-        contents: new Buffer("wadup();")
+        path: './test/fixture/file.js',
+        cwd: './test/',
+        base: './test/fixture/',
+        contents: new Buffer('wadup();')
       });
 
       var fakeFile2 = new gutil.File({
-        path: "./test/fixture/file2.js",
-        cwd: "./test/",
-        base: "./test/fixture/",
-        contents: new Buffer("wadup();")
+        path: './test/fixture/file2.js',
+        cwd: './test/',
+        base: './test/fixture/',
+        contents: new Buffer('wadup();')
       });
 
       var stream = jshint();
@@ -72,10 +72,10 @@ describe('gulp-jshint', function() {
       var a = 0;
 
       var fakeFile = new gutil.File({
-        path: "./test/fixture/file.js",
-        cwd: "./test/",
-        base: "./test/fixture/",
-        contents: new Buffer("wadup();")
+        path: './test/fixture/file.js',
+        cwd: './test/',
+        base: './test/fixture/',
+        contents: new Buffer('wadup();')
       });
 
       var stream = jshint();
@@ -100,10 +100,10 @@ describe('gulp-jshint', function() {
       var a = 0;
 
       var fakeFile = new gutil.File({
-        path: "./test/fixture/file.js",
-        cwd: "./test/",
-        base: "./test/fixture/",
-        contents: new Buffer("doe =")
+        path: './test/fixture/file.js',
+        cwd: './test/',
+        base: './test/fixture/',
+        contents: new Buffer('doe =')
       });
 
       var stream = jshint();
@@ -127,10 +127,10 @@ describe('gulp-jshint', function() {
       var a = 0;
 
       var fakeFile = new gutil.File({
-        path: "./test/fixture/file.js",
-        cwd: "./test/",
-        base: "./test/fixture/",
-        contents: new Buffer("wadup = 123;")
+        path: './test/fixture/file.js',
+        cwd: './test/',
+        base: './test/fixture/',
+        contents: new Buffer('wadup = 123;')
       });
 
       var stream = jshint(path.join(__dirname, './samplejshint'));
@@ -141,7 +141,7 @@ describe('gulp-jshint', function() {
         should.exist(newFile.jshint.results);
         should.exist(newFile.jshint.data);
         should.exist(newFile.jshint.opt);
-        newFile.jshint.results[0].error.reason.should.equal("'wadup' is not defined.");
+        newFile.jshint.results[0].error.reason.should.equal('\'wadup\' is not defined.');
       });
       stream.once('end', function () {
         a.should.equal(1);
@@ -156,10 +156,10 @@ describe('gulp-jshint', function() {
       var a = 0;
 
       var fakeFile = new gutil.File({
-        path: "./test/fixture/file.js",
-        cwd: "./test/",
-        base: "./test/fixture/",
-        contents: new Buffer("wadup = 123;")
+        path: './test/fixture/file.js',
+        cwd: './test/',
+        base: './test/fixture/',
+        contents: new Buffer('wadup = 123;')
       });
 
       var stream = jshint(path.join(__dirname, './samplejshint2'));
