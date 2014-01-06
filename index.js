@@ -7,6 +7,7 @@ var jshint = require('jshint').JSHINT;
 var jshintcli = require('jshint/src/cli');
 var gutil = require('gulp-util');
 var PluginError = gutil.PluginError;
+var Stream = require('stream');
 
 var formatOutput = function(success, file, opt) {
   // no error
@@ -51,7 +52,28 @@ var jshintPlugin = function(opt){
 
   return map(function (file, cb) {
     if (file.isNull()) return cb(null, file); // pass along
-    if (file.isStream()) return cb(new PluginError('gulp-jshint', 'Streaming not supported'));
+    if (file.isStream()) {
+      var buf = new Buffer('');
+      var contents = file.contents;
+
+      file.contents = file.contents.pipe(new Stream.PassThrough());
+      
+      contents.on('data',function(chunk) {
+        buf = Buffer.concat([buf, chunk], buf.length + chunk.length);
+      }).on('error', function(err) {
+        cb(new PluginError('gulp-jshint', err));
+      }).on('end', function() {
+        // Use the buffered content
+        var success = jshint(buf.toString('utf8'), opt, globals);
+
+        // send status down-stream
+        file.jshint = formatOutput(success, file, opt);
+
+        cb(null, file);
+      });
+
+      return;
+    }
 
     var str = file.contents.toString('utf8');
     var success = jshint(str, opt, globals);
