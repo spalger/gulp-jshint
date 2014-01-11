@@ -51,6 +51,22 @@ Adds the following properties to the file object:
   file.jshint.opt = {}; // The options you passed to JSHint
 ```
 
+## Caching
+
+Optionally, you can use the `jshint.cached(...)` method to cache previously linted files.  It takes the same options as `jshint(...)` but caches successful files so they aren't ran again unless they change.
+
+This method uses a small temp file cache based on a hash of the contents of the file, the JSHint version and the JSHint options passed in.  If a JSHint option is changed all files will be ran again to prevent false positives.
+
+```javascript
+var jshint = require('gulp-jshint');
+
+gulp.task('lint', function() {
+  gulp.src('./lib/*.js')
+    .pipe(jshint.cached())
+    .pipe(jshint.reporter('YOUR_REPORTER_HERE'));
+});
+```
+
 ## Reporters
 
 ### JSHint reporters
