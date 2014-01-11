@@ -2,9 +2,11 @@
 
 'use strict';
 
+var fs = require('fs');
 var map = require('map-stream');
 var jshint = require('jshint').JSHINT;
 var jshintcli = require('jshint/src/cli');
+var cache = require('gulp-cache');
 var gutil = require('gulp-util');
 var PluginError = gutil.PluginError;
 
@@ -62,6 +64,40 @@ var jshintPlugin = function(opt){
     cb(null, file);
   });
 };
+
+jshintPlugin.cached = function (opt) {
+  // TODO: Find a better way to grab this
+  var jshintVer = '2.4.0';
+  var jshintOpts;
+
+  if (typeof opt === 'string') {
+    jshintOpts = fs.readFileSync(opt);
+  } else {
+    jshintOpts = JSON.stringify(opt);
+  }
+  
+  return cache.proxy('jshint', {
+    task: jshintPlugin(opt),
+    key: function (file) {
+      return [file.contents.toString('utf8'), jshintVer, jshintOpts].join('');
+    },
+    success: function (jshintedFile) {
+      return jshintedFile.jshint.success;
+    },
+    value: function (jshintedFile) {
+      var result = {
+        jshint: {
+          success: jshintedFile.jshint.success,
+          cached: true
+        }
+      };
+
+      return result;
+    }
+  });
+};
+
+jshintPlugin.cached.fileCache = cache.fileCache;
 
 jshintPlugin.loadReporter = function(reporter) {
   // we want the function

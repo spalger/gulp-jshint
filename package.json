@@ -12,7 +12,8 @@
   "dependencies": {
     "map-stream": "~0.0.4",
     "jshint": "~2.4.0",
-    "gulp-util": "~2.2.5"
+    "gulp-util": "~2.2.5",
+    "gulp-cache": "0.0.4"
   },
   "devDependencies": {
     "mocha": "*",
