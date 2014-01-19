@@ -16,7 +16,8 @@
   },
   "devDependencies": {
     "mocha": "*",
-    "should": "*"
+    "should": "*",
+    "event-stream": "~3.0.20"
   },
   "scripts": {
     "test": "mocha --reporter spec"
