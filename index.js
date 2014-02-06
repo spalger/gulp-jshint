@@ -63,12 +63,20 @@ var jshintPlugin = function(opt){
   });
 };
 
+jshintPlugin.failReporter = function(){
+  return map(function (file, cb) {
+    // nothing to report or no errors
+    if (!file.jshint || file.jshint.success) return cb(null, file);
+    return cb(new Error('JSHint failed for '+file.relative), file);
+  });
+};
+
 jshintPlugin.loadReporter = function(reporter) {
   // we want the function
   if (typeof reporter === 'function') return reporter;
 
   // object reporters
-  if (typeof reporter === 'object' && typeof reporter.reporter === 'function') return jshintPlugin.loadReporter(reporter.reporter);
+  if (typeof reporter === 'object' && typeof reporter.reporter === 'function') return reporter.reporter;
 
   // load jshint built-in reporters
   if (typeof reporter === 'string') {
@@ -87,6 +95,9 @@ jshintPlugin.loadReporter = function(reporter) {
 
 jshintPlugin.reporter = function (reporter) {
   if (!reporter) reporter = 'default';
+  if (reporter === 'fail') {
+    return jshintPlugin.failReporter();
+  }
   var rpt = jshintPlugin.loadReporter(reporter);
 
   if (typeof rpt !== 'function') {
