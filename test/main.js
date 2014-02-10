@@ -197,8 +197,10 @@ describe('gulp-jshint', function() {
           ++a;
           should.exist(newFile.jshint.success);
           newFile.jshint.success.should.equal(false);
-          should.exist(newFile.jshint.rcFile);
-          newFile.jshint.rcFile.should.equal(path.resolve(__dirname, './relativerc/.jshintrc'));
+          should.exist(newFile.jshint.opt);
+          newFile.jshint.opt.should.eql({
+            'invalid option': true
+          });
         });
         stream.once('end', function () {
           a.should.equal(1);

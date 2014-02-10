@@ -75,22 +75,24 @@ var jshintPlugin = function(opt){
     var str = file.contents.toString('utf8');
     var rcFile;
     var fileOpt = extend({}, opt);
+    var fileGlobals = extend({}, globals);
 
     if (findJshintRc) {
       rcFile = findConfig(file);
       if (rcFile) {
-        extend(fileOpt, jshintcli.loadConfig(rcFile));
+        extend(fileOpt, rcFile);
         delete fileOpt.dirname;
+        if (fileOpt.globals) {
+          extend(fileGlobals, fileOpt.globals);
+          delete fileOpt.globals;
+        }
       }
     }
 
-    var success = jshint(str, fileOpt, globals);
+    var success = jshint(str, fileOpt, fileGlobals);
 
     // send status down-stream
     file.jshint = formatOutput(success, file, fileOpt);
-    if (rcFile) {
-      file.jshint.rcFile = rcFile;
-    }
 
     cb(null, file);
   });
@@ -100,6 +102,7 @@ var rcFileMap = {};
 var findConfig = function (file) {
   var rcName = '.jshintrc';
   var rcPath;
+  var rcFile;
   var checkPath;
   var searched = [];
   for (var dir = path.dirname(file.path); !~searched.indexOf(dir); dir = path.resolve(dir, '..')) {
@@ -116,11 +119,14 @@ var findConfig = function (file) {
     }
   }
 
-  searched.forEach(function (dir) {
-    rcFileMap[dir] = rcPath;
-  });
+  if (rcPath) {
+    rcFile = jshintcli.loadConfig(rcPath);
+    searched.forEach(function (dir) {
+      rcFileMap[dir] = rcFile;
+    });
+  }
 
-  return rcPath;
+  return rcFile;
 };
 
 jshintPlugin.failReporter = function(){
