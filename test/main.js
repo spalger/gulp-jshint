@@ -189,7 +189,7 @@ describe('gulp-jshint', function() {
           path: './test/relativerc/fixture/file.js',
           cwd: './test/',
           base: './test/relativerc/',
-          contents: new Buffer('wadup = 123;')
+          contents: new Buffer('if (!pack) pack = {};')
         });
 
         var stream = jshint();
@@ -198,8 +198,11 @@ describe('gulp-jshint', function() {
           should.exist(newFile.jshint.success);
           newFile.jshint.success.should.equal(false);
           should.exist(newFile.jshint.opt);
+          newFile.jshint.results.length.should.eql(1);
+          newFile.jshint.results[0].error.code.should.eql('W116'); // curl
           newFile.jshint.opt.should.eql({
-            'invalid option': true
+            'curly': true,
+            'undef': true
           });
         });
         stream.once('end', function () {
@@ -226,7 +229,6 @@ describe('gulp-jshint', function() {
           ++a;
           should.exist(newFile.jshint.success);
           newFile.jshint.success.should.equal(true);
-          should.not.exist(newFile.jshint.rcFile);
         });
         stream.once('end', function () {
           a.should.equal(1);
@@ -252,7 +254,6 @@ describe('gulp-jshint', function() {
           ++a;
           should.exist(newFile.jshint.success);
           newFile.jshint.success.should.equal(true);
-          should.not.exist(newFile.jshint.rcFile);
         });
         stream.once('end', function () {
           a.should.equal(1);

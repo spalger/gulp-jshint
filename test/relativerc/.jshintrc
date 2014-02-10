@@ -1,3 +1,7 @@
 {
-  "invalid option": true
+  "curly": true,
+  "undef": true,
+  "globals": {
+    "pack": true
+  }
 }
