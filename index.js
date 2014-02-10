@@ -6,6 +6,8 @@ var map = require('map-stream');
 var jshint = require('jshint').JSHINT;
 var jshintcli = require('jshint/src/cli');
 var gutil = require('gulp-util');
+var path = require('path');
+var fs = require('fs');
 var PluginError = gutil.PluginError;
 
 var formatOutput = function(success, file, opt) {
@@ -35,12 +37,29 @@ var formatOutput = function(success, file, opt) {
   return output;
 };
 
+// dead simple merge
+var extend = function (dest, src) {
+  Object.keys(src || {}).forEach(function (key) {
+    if (dest[key] === void 0) {
+      dest[key] = src[key];
+    }
+  });
+  return dest;
+};
+
 var jshintPlugin = function(opt){
   if (!opt) opt = {};
   var globals = {};
+  var findJshintRc = true;
+
+  if (opt.auto !== void 0) {
+    findJshintRc = opt.auto;
+    delete opt.auto;
+  }
 
   if (typeof opt === 'string'){
     opt = jshintcli.loadConfig(opt);
+    findJshintRc = false;
     delete opt.dirname;
   }
 
@@ -54,13 +73,54 @@ var jshintPlugin = function(opt){
     if (file.isStream()) return cb(new PluginError('gulp-jshint', 'Streaming not supported'));
 
     var str = file.contents.toString('utf8');
-    var success = jshint(str, opt, globals);
+    var rcFile;
+    var fileOpt = extend({}, opt);
+
+    if (findJshintRc) {
+      rcFile = findConfig(file);
+      if (rcFile) {
+        extend(fileOpt, jshintcli.loadConfig(rcFile));
+        delete fileOpt.dirname;
+      }
+    }
+
+    var success = jshint(str, fileOpt, globals);
 
     // send status down-stream
-    file.jshint = formatOutput(success, file, opt);
+    file.jshint = formatOutput(success, file, fileOpt);
+    if (rcFile) {
+      file.jshint.rcFile = rcFile;
+    }
 
     cb(null, file);
   });
+};
+
+var rcFileMap = {};
+var findConfig = function (file) {
+  var rcName = '.jshintrc';
+  var rcPath;
+  var checkPath;
+  var searched = [];
+  for (var dir = path.dirname(file.path); !~searched.indexOf(dir); dir = path.resolve(dir, '..')) {
+    if (rcFileMap.hasOwnProperty(dir)) {
+      rcPath = rcFileMap[dir];
+      break;
+    }
+
+    searched.push(dir);
+    checkPath = path.join(dir, rcName);
+    if (fs.existsSync(checkPath)) {
+      rcPath = checkPath;
+      break;
+    }
+  }
+
+  searched.forEach(function (dir) {
+    rcFileMap[dir] = rcPath;
+  });
+
+  return rcPath;
 };
 
 jshintPlugin.failReporter = function(){
