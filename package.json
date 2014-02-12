@@ -1,7 +1,7 @@
 {
   "name": "gulp-jshint",
   "description": "JSHint plugin for gulp",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "homepage": "http://github.com/wearefractal/gulp-jshint",
   "repository": "git://github.com/wearefractal/gulp-jshint.git",
   "author": "Fractal <contact@wearefractal.com> (http://wearefractal.com/)",
@@ -10,9 +10,10 @@
     "gulpplugin"
   ],
   "dependencies": {
-    "map-stream": "~0.0.4",
-    "jshint": "~2.4.0",
-    "gulp-util": "~2.2.5"
+    "map-stream": "~0.1.0",
+    "jshint": "~2.4.3",
+    "gulp-util": "~2.2.14",
+    "lodash.clone": "~2.4.1"
   },
   "devDependencies": {
     "mocha": "*",

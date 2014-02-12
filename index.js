@@ -3,6 +3,7 @@
 'use strict';
 
 var map = require('map-stream');
+var clone = require('lodash.clone');
 var jshint = require('jshint').JSHINT;
 var jshintcli = require('jshint/src/cli');
 var gutil = require('gulp-util');
@@ -44,6 +45,7 @@ var jshintPlugin = function(opt){
     delete opt.dirname;
   }
 
+  opt = clone(opt);
   if (opt.globals) {
     globals = opt.globals;
     delete opt.globals;
