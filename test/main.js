@@ -180,5 +180,91 @@ describe('gulp-jshint', function() {
       stream.end();
     });
 
+    describe('.jshintrc file discovery', function () {
+
+      it('happens automatically', function(done) {
+        var a = 0;
+
+        var fakeFile = new gutil.File({
+          path: './test/relativerc/fixture/file.js',
+          cwd: './test/',
+          base: './test/relativerc/',
+          contents: new Buffer('if (!pack) pack = {};')
+        });
+
+        var stream = jshint();
+        stream.on('data', function (newFile) {
+          ++a;
+          should.exist(newFile.jshint.success);
+          newFile.jshint.success.should.equal(false);
+          should.exist(newFile.jshint.opt);
+          newFile.jshint.results.length.should.eql(1);
+          newFile.jshint.results[0].error.code.should.eql('W116'); // curl
+          newFile.jshint.opt.should.eql({
+            'curly': true,
+            'undef': true
+          });
+        });
+        stream.once('end', function () {
+          a.should.equal(1);
+          done();
+        });
+
+        stream.write(fakeFile);
+        stream.end();
+      });
+
+      it('is disabled by passing `auto: false`', function(done) {
+        var a = 0;
+
+        var fakeFile = new gutil.File({
+          path: './test/relativerc/fixture/file.js',
+          cwd: './test/',
+          base: './test/relativerc/',
+          contents: new Buffer('wadup = 123;')
+        });
+
+        var stream = jshint({ auto: false });
+        stream.on('data', function (newFile) {
+          ++a;
+          should.exist(newFile.jshint.success);
+          newFile.jshint.success.should.equal(true);
+        });
+        stream.once('end', function () {
+          a.should.equal(1);
+          done();
+        });
+
+        stream.write(fakeFile);
+        stream.end();
+      });
+
+      it('is disabled by passing in the path for a jshintrc file', function(done) {
+        var a = 0;
+
+        var fakeFile = new gutil.File({
+          path: './test/relativerc/fixture/file.js',
+          cwd: './test/',
+          base: './test/relativerc/',
+          contents: new Buffer('wadup = 123;')
+        });
+
+        var stream = jshint(path.join(__dirname, './samplejshint2'));
+        stream.on('data', function (newFile) {
+          ++a;
+          should.exist(newFile.jshint.success);
+          newFile.jshint.success.should.equal(true);
+        });
+        stream.once('end', function () {
+          a.should.equal(1);
+          done();
+        });
+
+        stream.write(fakeFile);
+        stream.end();
+      });
+
+    });
+
   });
 });

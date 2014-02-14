@@ -1,0 +1,7 @@
+{
+  "curly": true,
+  "undef": true,
+  "globals": {
+    "pack": true
+  }
+}

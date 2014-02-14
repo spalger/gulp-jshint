@@ -20,7 +20,7 @@
     "should": "*"
   },
   "scripts": {
-    "test": "mocha --reporter spec"
+    "test": "mocha --reporter spec test/**/*.js"
   },
   "engines": {
     "node": ">= 0.4.0"
