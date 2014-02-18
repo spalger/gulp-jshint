@@ -6,6 +6,7 @@ var map = require('map-stream');
 var jshint = require('jshint').JSHINT;
 var jshintcli = require('jshint/src/cli');
 var gutil = require('gulp-util');
+var RcLoader = require('rcloader');
 var PluginError = gutil.PluginError;
 
 var formatOutput = function(success, file, opt) {
@@ -36,30 +37,32 @@ var formatOutput = function(success, file, opt) {
 };
 
 var jshintPlugin = function(opt){
-  if (!opt) opt = {};
-  var globals = {};
-
-  if (typeof opt === 'string'){
-    opt = jshintcli.loadConfig(opt);
-    delete opt.dirname;
-  }
-
-  if (opt.globals) {
-    globals = opt.globals;
-    delete opt.globals;
-  }
+  var rcLoader = new RcLoader('.jshintrc', opt, {
+    loader: function (path) {
+      var cfg = jshintcli.loadConfig(path);
+      delete cfg.dirname;
+      return cfg;
+    }
+  });
 
   return map(function (file, cb) {
     if (file.isNull()) return cb(null, file); // pass along
     if (file.isStream()) return cb(new PluginError('gulp-jshint', 'Streaming not supported'));
+    rcLoader.for(file.path, function (err, cfg) {
+      if (err) return cb(err);
 
-    var str = file.contents.toString('utf8');
-    var success = jshint(str, opt, globals);
+      var globals;
+      if (cfg.globals) {
+        globals = cfg.globals;
+        delete cfg.globals;
+      }
 
-    // send status down-stream
-    file.jshint = formatOutput(success, file, opt);
-
-    cb(null, file);
+      var str = file.contents.toString('utf8');
+      var success = jshint(str, cfg, globals);
+      // send status down-stream
+      file.jshint = formatOutput(success, file, cfg);
+      cb(null, file);
+    });
   });
 };
 
