@@ -16,6 +16,10 @@
 </tr>
 </table>
 
+## Install
+
+    npm install gulp-jshint --save-dev
+
 ## Usage
 
 ```javascript
