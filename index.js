@@ -70,7 +70,7 @@ jshintPlugin.failReporter = function(){
   return map(function (file, cb) {
     // nothing to report or no errors
     if (!file.jshint || file.jshint.success) return cb(null, file);
-    return cb(new Error('JSHint failed for '+file.relative), file);
+    return cb(new PluginError('gulp-jshint', 'JSHint failed for '+file.relative), file);
   });
 };
 
@@ -104,7 +104,7 @@ jshintPlugin.reporter = function (reporter) {
   var rpt = jshintPlugin.loadReporter(reporter);
 
   if (typeof rpt !== 'function') {
-    throw new Error('Invalid reporter');
+    throw new PluginError('gulp-jshint', 'Invalid reporter');
   }
 
   // return stream that reports stuff

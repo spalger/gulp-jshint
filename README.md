@@ -36,9 +36,6 @@ gulp.task('lint', function() {
 
 Plugin options:
 
-- `fail`
-  - Default is `false`
-  - When `true` this will cause jshint to emit an error event on warnings which will exit the process with an error unless handled
 - `lookup`
   - Default is `true`
   - When `false` do not lookup `.jshintrc` files. See the [JSHint docs](http://www.jshint.com/docs/) for more info.
