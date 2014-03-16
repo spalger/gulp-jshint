@@ -37,6 +37,10 @@ var formatOutput = function(success, file, opt) {
 };
 
 var jshintPlugin = function(opt){
+  if (opt) {
+    jshintPlugin.failBeep = opt.failBeep;
+    delete opt.failBeep;
+  }
   var rcLoader = new RcLoader('.jshintrc', opt, {
     loader: function (path) {
       var cfg = jshintcli.loadConfig(path);
@@ -48,6 +52,7 @@ var jshintPlugin = function(opt){
   return map(function (file, cb) {
     if (file.isNull()) return cb(null, file); // pass along
     if (file.isStream()) return cb(new PluginError('gulp-jshint', 'Streaming not supported'));
+
     rcLoader.for(file.path, function (err, cfg) {
       if (err) return cb(err);
 
@@ -70,6 +75,7 @@ jshintPlugin.failReporter = function(){
   return map(function (file, cb) {
     // nothing to report or no errors
     if (!file.jshint || file.jshint.success) return cb(null, file);
+    if (jshintPlugin.failBeep) gutil.beep();
     return cb(new PluginError('gulp-jshint', 'JSHint failed for '+file.relative), file);
   });
 };
