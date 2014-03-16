@@ -38,7 +38,7 @@ Plugin options:
 
 - `failBeep`
   - Default is `false`
-    When `true` causes the Fail Reporter to ring your terminal bell if your linting fails
+  - When `true` causes the Fail Reporter to ring your terminal bell if your linting fails
 - `lookup`
   - Default is `true`
   - When `false` do not lookup `.jshintrc` files. See the [JSHint docs](http://www.jshint.com/docs/) for more info.
