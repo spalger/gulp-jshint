@@ -37,6 +37,10 @@ var formatOutput = function(success, file, opt) {
 };
 
 var jshintPlugin = function(opt){
+  if (opt) {
+    jshintPlugin.failBeep = opt.failBeep;
+    delete opt.failBeep;
+  }
   var rcLoader = new RcLoader('.jshintrc', opt, {
     loader: function (path) {
       var cfg = jshintcli.loadConfig(path);
@@ -70,6 +74,7 @@ jshintPlugin.failReporter = function(){
   return map(function (file, cb) {
     // nothing to report or no errors
     if (!file.jshint || file.jshint.success) return cb(null, file);
+    if (jshintPlugin.failBeep) gutil.beep();
     return cb(new PluginError('gulp-jshint', 'JSHint failed for '+file.relative), file);
   });
 };
