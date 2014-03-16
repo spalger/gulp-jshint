@@ -52,7 +52,6 @@ var jshintPlugin = function(opt){
   return map(function (file, cb) {
     if (file.isNull()) return cb(null, file); // pass along
     if (file.isStream()) return cb(new PluginError('gulp-jshint', 'Streaming not supported'));
-
     rcLoader.for(file.path, function (err, cfg) {
       if (err) return cb(err);
 
