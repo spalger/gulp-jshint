@@ -7,6 +7,10 @@ var jshint = require('jshint').JSHINT;
 var jshintcli = require('jshint/src/cli');
 var gutil = require('gulp-util');
 var RcLoader = require('rcloader');
+var minimatch = require('minimatch');
+var resolve = require('path').resolve;
+var fs = require('fs');
+
 var PluginError = gutil.PluginError;
 
 var formatOutput = function(success, file, opt) {
@@ -45,23 +49,48 @@ var jshintPlugin = function(opt){
     }
   });
 
+  var ignoreLoader = new RcLoader('.jshintignore', {}, {
+    loader: function (path, done) {
+      // .jshintignore is a line-delimited list of patterns
+      // convert to an array and filter empty lines
+      fs.readFile(path, function (err, contents) {
+        if (err) return done(err);
+        done(null, {
+          patterns: String(contents)
+            .split(/\r?\n/)
+            .filter(function (line) { return Boolean(line.trim()); })
+        });
+      });
+    }
+  });
+
   return map(function (file, cb) {
-    if (file.isNull()) return cb(null, file); // pass along
-    if (file.isStream()) return cb(new PluginError('gulp-jshint', 'Streaming not supported'));
-    rcLoader.for(file.path, function (err, cfg) {
+    ignoreLoader.for(file.path, function (err, ign) {
       if (err) return cb(err);
 
-      var globals;
-      if (cfg.globals) {
-        globals = cfg.globals;
-        delete cfg.globals;
-      }
+      var ignored = Array.isArray(ign.patterns) && ign.patterns.some(function (pat) {
+        return minimatch(resolve(file.path), pat, { nocase: true });
+      });
 
-      var str = file.contents.toString('utf8');
-      var success = jshint(str, cfg, globals);
-      // send status down-stream
-      file.jshint = formatOutput(success, file, cfg);
-      cb(null, file);
+      if (ignored) return cb(null, file);
+      if (file.isNull() || file.jshint) return cb(null, file); // pass along
+      if (file.isStream()) return cb(new PluginError('gulp-jshint', 'Streaming not supported'));
+
+      rcLoader.for(file.path, function (err, cfg) {
+        if (err) return cb(err);
+
+        var globals;
+        if (cfg.globals) {
+          globals = cfg.globals;
+          delete cfg.globals;
+        }
+
+        var str = file.contents.toString('utf8');
+        var success = jshint(str, cfg, globals);
+        // send status down-stream
+        file.jshint = formatOutput(success, file, cfg);
+        cb(null, file);
+      });
     });
   });
 };
