@@ -1,4 +1,4 @@
-![status](https://secure.travis-ci.org/wearefractal/gulp-jshint.png?branch=master)
+[![Build Status](https://travis-ci.org/spenceralger/gulp-jshint.svg?branch=master)](https://travis-ci.org/spenceralger/gulp-jshint)
 
 ## Information
 
