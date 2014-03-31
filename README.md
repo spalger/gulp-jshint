@@ -24,6 +24,7 @@
 
 ```javascript
 var jshint = require('gulp-jshint');
+var gulp   = require('gulp');
 
 gulp.task('lint', function() {
   gulp.src('./lib/*.js')
