@@ -27,7 +27,7 @@ var jshint = require('gulp-jshint');
 var gulp   = require('gulp');
 
 gulp.task('lint', function() {
-  gulp.src('./lib/*.js')
+  return gulp.src('./lib/*.js')
     .pipe(jshint())
     .pipe(jshint.reporter('YOUR_REPORTER_HERE'));
 });
@@ -127,7 +127,7 @@ var myReporter = map(function (file, cb) {
 });
 
 gulp.task('lint', function() {
-  gulp.files('./lib/*.js')
+  return gulp.files('./lib/*.js')
     .pipe(jshint())
     .pipe(myReporter);
 });
