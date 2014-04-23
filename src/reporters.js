@@ -5,7 +5,11 @@ exports.failReporter = function(){
   return map(function (file, cb) {
     // nothing to report or no errors
     if (!file.jshint || file.jshint.success) return cb(null, file);
-    var err = new PluginError('gulp-jshint', 'JSHint failed for: '+file.relative, {showStack: false});
+    var errOpt = {
+      message: 'JSHint failed for: '+file.relative,
+      showStack: false
+    };
+    var err = new PluginError('gulp-jshint', errOpt);
     return cb(err, file);
   });
 };
