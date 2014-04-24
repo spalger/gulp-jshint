@@ -17,8 +17,7 @@
     "jshint": "^2.5.0",
     "gulp-util": "~2.2.5",
     "rcloader": "^0.1.2",
-    "minimatch": "^0.2.14",
-    "should": "^3.2.0"
+    "minimatch": "^0.2.14"
   },
   "devDependencies": {
     "mocha": "*",
