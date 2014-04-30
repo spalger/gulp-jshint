@@ -24,7 +24,17 @@ module.exports = function check(file, cb) {
 
     if (Array.isArray(cfg.patterns)) {
       ignored = cfg.patterns.some(function (pattern) {
-        return minimatch(resolve(file.path), pattern, { nocase: true });
+
+        if (minimatch(resolve(file.path), pattern, { nocase: true })) {
+            return true;
+        }
+
+        if (file.path === resolve(pattern)) {
+            return true;
+        }
+
+        return (fs.existsSync(file.path) && fs.lstatSync(file.path).isDirectory() &&
+          pattern.match(/^[^\/]*\/?$/) && file.path.match(new RegExp("^" + pattern + ".*")));
       });
     }
 
