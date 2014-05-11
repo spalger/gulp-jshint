@@ -1,7 +1,7 @@
-var fs        = require('fs');
+var fs = require('fs');
 var minimatch = require('minimatch');
-var resolve   = require('path').resolve;
-var RcLoader  = require('rcloader');
+var resolve = require('path').resolve;
+var RcLoader = require('rcloader');
 
 var ignoreLoader = new RcLoader('.jshintignore', {}, {
   loader: function (path, done) {

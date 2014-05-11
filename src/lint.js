@@ -1,6 +1,6 @@
-var RcLoader   = require('rcloader');
-var jshint     = require('jshint').JSHINT;
-var jshintcli  = require('jshint/src/cli');
+var RcLoader = require('rcloader');
+var jshint = require('jshint').JSHINT;
+var jshintcli = require('jshint/src/cli');
 
 module.exports = function createLintFunction(userOpts) {
 

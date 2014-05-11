@@ -1,6 +1,6 @@
-var gutil     = require('gulp-util');
+var gutil = require('gulp-util');
 var jshintcli = require('jshint/src/cli');
-var map       = require('map-stream');
+var map = require('map-stream');
 
 module.exports = function extract(when) {
   var newFileContent;
