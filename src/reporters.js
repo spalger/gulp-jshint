@@ -1,7 +1,7 @@
 var map = require('map-stream');
 var PluginError = require('gulp-util').PluginError;
 
-exports.failReporter = function(){
+exports.failReporter = function (){
   return map(function (file, cb) {
     // nothing to report or no errors
     if (!file.jshint || file.jshint.success) return cb(null, file);
@@ -14,7 +14,7 @@ exports.failReporter = function(){
   });
 };
 
-exports.loadReporter = function(reporter) {
+exports.loadReporter = function (reporter) {
   // we want the function
   if (typeof reporter === 'function') return reporter;
 
