@@ -15,16 +15,18 @@
   "dependencies": {
     "map-stream": "^0.1.0",
     "jshint": "^2.5.0",
-    "gulp-util": "~2.2.5",
+    "gulp-util": "^2.2.5",
     "rcloader": "^0.1.2",
-    "minimatch": "^0.2.14"
+    "minimatch": "^0.2.14",
+    "lodash": "^2.4.1"
   },
   "devDependencies": {
-    "mocha": "*",
-    "should": "*"
+    "gulp": "^3.6.2",
+    "mocha": "^1.18.2",
+    "should": "^3.3.1"
   },
   "scripts": {
-    "test": "mocha --reporter spec"
+    "test": "gulp test"
   },
   "engines": {
     "node": ">= 0.4.0"
