@@ -12,27 +12,17 @@ module.exports = function createLintFunction(userOpts) {
     }
   });
 
-  var formatOutput = function (success, file, cfg) {
-    // no error
-    if (success) return {success: success};
-
+  var reportErrors = function (file, out, cfg) {
     var filePath = (file.path || 'stdin');
 
-    // errors
-    var results = jshint.errors.map(function (err) {
+    out.results = jshint.errors.map(function (err) {
       if (!err) return;
-      return {file: filePath, error: err};
+      return { file: filePath, error: err };
     }).filter(Boolean);
 
-    var data = [jshint.data()];
-    data[0].file = filePath;
-
-    return {
-      success: success,
-      results: results,
-      data: data,
-      opt: cfg
-    };
+    out.opt = cfg;
+    out.data = [jshint.data()];
+    out.data[0].file = filePath;
   };
 
   return function lint(file, cb) {
@@ -45,10 +35,14 @@ module.exports = function createLintFunction(userOpts) {
         delete cfg.globals;
       }
 
-      var str = file.contents.toString('utf8');
-      var success = jshint(str, cfg, globals);
+      // get or create file.jshint, we will write all output here
+      var out = file.jshint || (file.jshint = {});
+      var str = (out.extracted) || file.contents.toString('utf8');
 
-      cb(null, formatOutput(success, file, cfg));
+      out.success = jshint(str, cfg, globals);
+      if (!out.success) reportErrors(file, out, cfg);
+
+      return cb(null, file);
     });
   };
 };

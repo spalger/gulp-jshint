@@ -12,13 +12,17 @@ var fictionalRoot = '/home/username/sources/project';
 
 module.exports = {
   File: function (opts) {
-    opts.path = join(fictionalRoot, opts.path);
+    var path = join(fictionalRoot, opts.path);
+
+    var contents = opts.contents
+      ? new Buffer(opts.contents, 'utf8')
+      : fs.readFileSync(join(__dirname, opts.path));
 
     return new gutil.File({
       cwd: fictionalRoot,
       base: fictionalRoot,
-      path: opts.path,
-      contents: new Buffer(opts.contents, 'utf8')
+      path: path,
+      contents: contents
     });
   },
   requireDir: function (dir) {
