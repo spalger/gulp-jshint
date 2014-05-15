@@ -4,6 +4,7 @@ var resolve = require('path').resolve;
 var relative = require('path').relative;
 var gfPath = require('./gulpfile-path');
 var RcLoader = require('rcloader');
+var PluginError = require('gulp-util').PluginError;
 
 var noSlashesRE = /^[^\/]*\/?$/;
 
@@ -37,6 +38,9 @@ module.exports = (function () {
   });
 
   return function check(file, cb) {
+    if (file.isNull()) return cb(null, true); // ignore null files
+    if (file.isStream()) return cb(new PluginError('gulp-jshint', 'Streaming not supported')); // throw an error
+
     var ignored = cfg.patterns.some(function (pattern) {
       var resolvedPath = resolve(file.path);
       var relativePath = relative(file.base, file.path);

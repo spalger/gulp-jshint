@@ -5,12 +5,12 @@ var gfDir = require('path').dirname(require('./gulpfile-path'));
 var _ = require('lodash');
 var relative = _.memoize(_.partial(require('path').relative, gfDir));
 
-exports.failReporter = function(){
+exports.failReporter = function () {
   return map(function (file, cb) {
     // nothing to report or no errors
     if (!file.jshint || file.jshint.success) return cb(null, file);
     var errOpt = {
-      message: 'JSHint failed for: '+file.relative,
+      message: 'JSHint failed for: ' + file.relative,
       showStack: false
     };
     var err = new PluginError('gulp-jshint', errOpt);
@@ -28,7 +28,7 @@ exports.loadReporter = function (reporter) {
   // load jshint built-in reporters
   if (typeof reporter === 'string') {
     try {
-      return exports.loadReporter(require('jshint/src/reporters/'+reporter));
+      return exports.loadReporter(require('jshint/src/reporters/' + reporter));
     } catch (err) {}
   }
 

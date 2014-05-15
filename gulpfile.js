@@ -6,6 +6,7 @@ gulp.task('lint', function () {
   return gulp.src([
     'src/**/*',
     'test/**/*',
+    '!test/fixtures/**/*',
     '*.js'
   ])
   .pipe(jshint())

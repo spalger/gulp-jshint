@@ -1,27 +1,22 @@
-/* jshint node:true */
 'use strict';
 
-var extract = require('./extract');
 var map = require('map-stream');
 var PluginError = require('gulp-util').PluginError;
 var reporters = require('./reporters');
+var extract = require('./extract');
+var fileIgnored = require('./file-ignored');
+var makeLint = require('./lint');
 
-var jshintPlugin = function (opt){
-  var lint = require('./lint')(opt);
-  var fileIgnored = require('./file-ignored');
+var jshintPlugin = function (opt) {
+  var lint = makeLint(opt);
 
   return map(function (file, cb) {
-    if (file.isNull()) return cb(null, file); // pass along
-    if (file.isStream()) return cb(new PluginError('gulp-jshint', 'Streaming not supported'));
-
     fileIgnored(file, function (err, ignored) {
       if (err) return cb(err);
       if (ignored) return cb(null, file);
 
-      lint(file, function (err, lintOut) {
+      lint(file, function (err) {
         if (err) return cb(err);
-
-        file.jshint = lintOut;
         cb(null, file);
       });
     });
@@ -33,7 +28,7 @@ jshintPlugin.failReporter = reporters.fail;
 jshintPlugin.loadReporter = reporters.load;
 jshintPlugin.reporter = reporters.reporter;
 
-// expose the extract flag
+// export the extractor
 jshintPlugin.extract = extract;
 
 module.exports = jshintPlugin;
