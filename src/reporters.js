@@ -18,7 +18,7 @@ exports.failReporter = function(){
   });
 };
 
-exports.loadReporter = function(reporter) {
+exports.loadReporter = function (reporter) {
   // we want the function
   if (typeof reporter === 'function') return reporter;
 

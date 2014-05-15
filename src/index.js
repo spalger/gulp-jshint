@@ -1,11 +1,12 @@
 /* jshint node:true */
 'use strict';
 
+var extract = require('./extract');
 var map = require('map-stream');
 var PluginError = require('gulp-util').PluginError;
 var reporters = require('./reporters');
 
-var jshintPlugin = function(opt){
+var jshintPlugin = function (opt){
   var lint = require('./lint')(opt);
   var fileIgnored = require('./file-ignored');
 
@@ -31,5 +32,8 @@ var jshintPlugin = function(opt){
 jshintPlugin.failReporter = reporters.fail;
 jshintPlugin.loadReporter = reporters.load;
 jshintPlugin.reporter = reporters.reporter;
+
+// expose the extract flag
+jshintPlugin.extract = extract;
 
 module.exports = jshintPlugin;
