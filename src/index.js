@@ -1,11 +1,10 @@
-/* jshint node:true */
 'use strict';
 
 var map = require('map-stream');
 var PluginError = require('gulp-util').PluginError;
 var reporters = require('./reporters');
 
-var jshintPlugin = function(opt){
+var jshintPlugin = function (opt) {
   var lint = require('./lint')(opt);
   var fileIgnored = require('./file-ignored');
 
