@@ -26,6 +26,10 @@ module.exports = function createLintFunction(userOpts) {
   };
 
   return function lint(file, cb) {
+    // pass through dirs, streaming files, etc.
+    if (!file.isBuffer()) {
+      return cb(null, file);
+    }
     rcLoader.for(file.path, function (err, cfg) {
       if (err) return cb(err);
 
