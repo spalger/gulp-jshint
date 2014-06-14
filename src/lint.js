@@ -1,6 +1,8 @@
 var RcLoader = require('rcloader');
 var jshint = require('jshint').JSHINT;
 var jshintcli = require('jshint/src/cli');
+var minimatch = require("minimatch");
+var _ = require("lodash");
 
 module.exports = function createLintFunction(userOpts) {
 
@@ -33,10 +35,25 @@ module.exports = function createLintFunction(userOpts) {
     rcLoader.for(file.path, function (err, cfg) {
       if (err) return cb(err);
 
-      var globals;
+      var globals = {};
       if (cfg.globals) {
         globals = cfg.globals;
         delete cfg.globals;
+      }
+
+      if (cfg.overrides) {
+        _.each(cfg.overrides, function (options, pattern) {
+          if (!minimatch(file.path, pattern, { nocase: true, matchBase: true })) return;
+
+          if (options.globals) {
+            globals = _.extend(globals, options.globals);
+            delete options.globals;
+          }
+
+          _.extend(cfg, options);
+        });
+
+        delete cfg.overrides;
       }
 
       // get or create file.jshint, we will write all output here
