@@ -8,16 +8,14 @@ var relative = _.memoize(_.partial(require('path').relative, gfDir));
 exports.failReporter = function () {
   return through2.obj(function (file, enc, done) {
     // something to report and has errors
+    var error;
     if (file.jshint && !file.jshint.success) {
-      var errOpt = {
+      error = new PluginError('gulp-jshint', {
         message: 'JSHint failed for: ' + file.relative,
         showStack: false
-      };
-      this.emit('error', new PluginError('gulp-jshint', errOpt));
-    } else {
-      this.push(file);
+      });
     }
-    done();
+    done(error, file);
   });
 };
 
@@ -66,7 +64,6 @@ exports.reporter = function (reporter, reporterCfg) {
         rpt(file.jshint.results, file.jshint.data, opt);
       }
     }
-    this.push(file);
-    done();
+    done(null, file);
   });
 };
