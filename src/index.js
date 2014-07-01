@@ -14,11 +14,25 @@ var jshintPlugin = function (opt) {
     var stream = this;
 
     fileIgnored(file, function (err, ignored) {
-      if (err || ignored) {
-        done(err, file);
-      } else {
-        lint(file, function (err) { done(err, file); });
+      if (err) {
+        stream.emit('error', err);
+        done();
+        return;
       }
+      if (ignored) {
+        stream.push(file);
+        done();
+        return;
+      }
+
+      lint(file, function (err) {
+        if (err) {
+          stream.emit('error', err);
+        } else {
+          stream.push(file);
+        }
+        done();
+      });
     });
   });
 };
