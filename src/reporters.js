@@ -1,23 +1,20 @@
+var map = require('map-stream');
 var PluginError = require('gulp-util').PluginError;
-var through2 = require('through2');
 
 var gfDir = require('path').dirname(require('./gulpfile-path'));
 var _ = require('lodash');
 var relative = _.memoize(_.partial(require('path').relative, gfDir));
 
 exports.failReporter = function () {
-  return through2.obj(function (file, enc, done) {
-    // something to report and has errors
-    if (file.jshint && !file.jshint.success) {
-      var errOpt = {
-        message: 'JSHint failed for: ' + file.relative,
-        showStack: false
-      };
-      this.emit('error', new PluginError('gulp-jshint', errOpt));
-    } else {
-      this.push(file);
-    }
-    done();
+  return map(function (file, cb) {
+    // nothing to report or no errors
+    if (!file.jshint || file.jshint.success) return cb(null, file);
+    var errOpt = {
+      message: 'JSHint failed for: ' + file.relative,
+      showStack: false
+    };
+    var err = new PluginError('gulp-jshint', errOpt);
+    return cb(err, file);
   });
 };
 
@@ -55,18 +52,17 @@ exports.reporter = function (reporter, reporterCfg) {
   }
 
   // return stream that reports stuff
-  return through2.obj(function (file, enc, done) {
-    var opt;
-    // something to report and has errors
-    if (file.jshint && !file.jshint.success) {
-      // merge in reporter config
-      opt = _.defaults({}, reporterCfg || {}, file.jshint.opt);
+  return map(function (file, cb) {
+    // nothing to report or no errors
+    if (!file.jshint || file.jshint.success) return cb(null, file);
 
-      if (!file.jshint.ignored) {
-        rpt(file.jshint.results, file.jshint.data, opt);
-      }
+    // merge in reporter config
+    var opt = _.defaults({}, reporterCfg || {}, file.jshint.opt);
+
+    if (!file.jshint.ignored) {
+      rpt(file.jshint.results, file.jshint.data, opt);
     }
-    this.push(file);
-    done();
+
+    return cb(null, file);
   });
 };
