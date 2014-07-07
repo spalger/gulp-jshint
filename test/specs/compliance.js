@@ -4,7 +4,7 @@ var should = require('should');
 
 module.exports = function () {
   describe('Stream compliance', function () {
-    it('file should pass through', function(done) {
+    it('file should pass through', function (done) {
       var a = 0;
 
       var fakeFile = new gutil.File({
@@ -15,7 +15,7 @@ module.exports = function () {
       });
 
       var stream = jshint();
-      stream.on('data', function(newFile){
+      stream.on('data', function (newFile) {
         should.exist(newFile);
         should.exist(newFile.path);
         should.exist(newFile.relative);

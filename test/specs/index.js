@@ -4,7 +4,7 @@ var gutil = require('gulp-util');
 var path = require('path');
 require('mocha');
 
-describe('gulp-jshint', function() {
+describe('gulp-jshint', function () {
   require('../util').requireDir(__dirname).forEach(function (loadTests) {
     loadTests();
   });

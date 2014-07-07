@@ -13,7 +13,7 @@ module.exports = function () {
   }
 
   describe('reporting', function () {
-    it('should send success status', function(done) {
+    it('should send success status', function (done) {
       tutil.lint({
         file: new FakeFile,
         eachFile: function (file) {
@@ -27,7 +27,7 @@ module.exports = function () {
       }, done);
     });
 
-    it('should send failure status', function(done) {
+    it('should send failure status', function (done) {
       tutil.lint({
         file: new FakeFile('doe ='),
         eachFile: function (file) {
@@ -40,7 +40,7 @@ module.exports = function () {
       }, done);
     });
 
-    it('should load jshint file and pass', function(done) {
+    it('should load jshint file and pass', function (done) {
       var a = 0;
 
       var fakeFile = new gutil.File({
@@ -69,8 +69,8 @@ module.exports = function () {
     });
   });
 
-  describe('jshint.reporter(fail)', function(){
-    it('should emit error on failure', function(done) {
+  describe('jshint.reporter(fail)', function () {
+    it('should emit error on failure', function (done) {
       var fakeFile = new gutil.File({
         path: './test/fixture/file.js',
         cwd: './test/',
@@ -91,10 +91,40 @@ module.exports = function () {
       stream.write(fakeFile);
       stream.end();
     });
+
+    it('should emit when the second file fails and the first passes', function (done) {
+      var passFile = new gutil.File({
+        path: './test/fixture/file.js',
+        cwd: './test/',
+        base: './test/fixture/',
+        contents: new Buffer('doe =')
+      });
+
+      var failFile = new gutil.File({
+        path: './test/fixture/file.js',
+        cwd: './test/',
+        base: './test/fixture/',
+        contents: new Buffer('doe =')
+      });
+
+      var stream = jshint();
+      var failStream = jshint.reporter('fail');
+      stream.pipe(failStream);
+
+      failStream.on('error', function (err) {
+        should.exist(err);
+        err.message.indexOf(failFile.relative).should.not.equal(-1, 'should say which file');
+        done();
+      });
+
+      stream.write(passFile);
+      stream.write(failFile);
+      stream.end();
+    });
   });
 
-  describe('jshint.reporter()', function() {
-    it('file should pass through', function(done) {
+  describe('jshint.reporter()', function () {
+    it('file should pass through', function (done) {
       var a = 0;
 
       var fakeFile = new gutil.File({
@@ -105,7 +135,7 @@ module.exports = function () {
       });
 
       var stream = jshint.reporter();
-      stream.on('data', function(newFile){
+      stream.on('data', function (newFile) {
         should.exist(newFile);
         should.exist(newFile.path);
         should.exist(newFile.relative);
@@ -124,7 +154,7 @@ module.exports = function () {
       stream.end();
     });
 
-    it('file should trigger reporter when .jshint exists', function(done) {
+    it('file should trigger reporter when .jshint exists', function (done) {
       var fakeFile = new gutil.File({
         path: './test/fixture/file.js',
         cwd: './test/',
@@ -139,7 +169,7 @@ module.exports = function () {
         opt: {} // not real data
       };
 
-      var stream = jshint.reporter(function(results, data, opt){
+      var stream = jshint.reporter(function (results, data, opt) {
         should(results).equal(200);
         should(data).equal(300);
         should(opt).eql({});

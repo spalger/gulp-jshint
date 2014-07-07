@@ -3,7 +3,7 @@ var jshint = require('../../src');
 
 module.exports = function () {
   describe('linting', function () {
-    it('should jshint two files', function(done) {
+    it('should jshint two files', function (done) {
       var a = 0;
 
       var fakeFile = new gutil.File({
@@ -21,7 +21,7 @@ module.exports = function () {
       });
 
       var stream = jshint();
-      stream.on('data', function(newFile){
+      stream.on('data', function (newFile) {
         ++a;
       });
 

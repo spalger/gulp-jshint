@@ -6,7 +6,7 @@ var should = require('should');
 
 module.exports = function () {
   describe('file ignores', function () {
-    it('should ignore based on simple directory name', function(done) {
+    it('should ignore based on simple directory name', function (done) {
       tutil.lint({
         config: tutil.fixture('.rc-undef'),
         file: new tutil.File({
@@ -19,7 +19,7 @@ module.exports = function () {
       }, done);
     });
 
-    it('should ignore based on simple directory name with trailing slash', function(done) {
+    it('should ignore based on simple directory name with trailing slash', function (done) {
       tutil.lint({
         config: tutil.fixture('.rc-undef'),
         file: new tutil.File({

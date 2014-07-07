@@ -3,14 +3,5 @@
   "globals": {
     "describe": true,
     "it": true
-  },
-  "overrides": {
-    "*Indent4.js": {
-      "indent": 4
-    },
-
-    "*Indent8.js": {
-      "indent": 8
-    }
   }
 }
