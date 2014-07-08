@@ -6,6 +6,7 @@ require('mocha');
 
 describe('gulp-jshint', function () {
   require('./compliance');
+  require('./stream');
   require('./linting');
   require('./reporters');
   require('./integration');
