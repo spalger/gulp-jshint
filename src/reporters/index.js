@@ -1,21 +1,8 @@
-var stream = require('./stream');
 var PluginError = require('gulp-util').PluginError;
-
-var gfDir = require('path').dirname(require('./gulpfile-path'));
+var stream = require('../stream');
 var _ = require('lodash');
-var relative = _.memoize(_.partial(require('path').relative, gfDir));
 
-exports.failReporter = function () {
-  return stream(function (file, cb) {
-    // nothing to report or no errors
-    if (!file.jshint || file.jshint.success) return cb(null, file);
-
-    return cb(new PluginError('gulp-jshint', {
-      message: 'JSHint failed for: ' + file.relative,
-      showStack: false
-    }));
-  });
-};
+exports.failReporter = require('./fail');
 
 exports.loadReporter = function (reporter) {
   // we want the function
@@ -40,11 +27,13 @@ exports.loadReporter = function (reporter) {
 };
 
 exports.reporter = function (reporter, reporterCfg) {
-  if (!reporter) reporter = 'default';
+  reporterCfg = reporterCfg || {};
+
   if (reporter === 'fail') {
-    return exports.failReporter();
+    return exports.failReporter(reporterCfg);
   }
-  var rpt = exports.loadReporter(reporter);
+
+  var rpt = exports.loadReporter(reporter || 'default');
 
   if (typeof rpt !== 'function') {
     throw new PluginError('gulp-jshint', 'Invalid reporter');
@@ -52,16 +41,13 @@ exports.reporter = function (reporter, reporterCfg) {
 
   // return stream that reports stuff
   return stream(function (file, cb) {
-    // nothing to report or no errors
-    if (!file.jshint || file.jshint.success) return cb(null, file);
+    if (file.jshint && !file.jshint.success && !file.jshint.ignored) {
+      // merge the reporter config into this files config
+      var opt = _.defaults({}, reporterCfg, file.jshint.opt);
 
-    // merge in reporter config
-    var opt = _.defaults({}, reporterCfg || {}, file.jshint.opt);
-
-    if (!file.jshint.ignored) {
       rpt(file.jshint.results, file.jshint.data, opt);
     }
 
-    return cb(null, file);
+    cb(null, file);
   });
 };

@@ -5,7 +5,9 @@ module.exports = function (handler, flush) {
   var async = handler.length >= 2;
 
   var str = through2({ objectMode: true }, function (obj, enc, _cb) {
+    var timeout;
     var done = function (err, obj) {
+      clearTimeout(timeout);
       if (err) str.emit('error', err);
       if (obj) str.push(obj);
 
@@ -14,6 +16,9 @@ module.exports = function (handler, flush) {
 
 
     if (async) {
+      timeout = setTimeout(function () {
+        throw new Error('Failed to call done in a stream handler before 30sec timeout.');
+      }, 30000);
       handler.call(str, obj, done);
     } else {
       handler.call(str, obj);
