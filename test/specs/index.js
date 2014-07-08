@@ -5,7 +5,8 @@ var path = require('path');
 require('mocha');
 
 describe('gulp-jshint', function () {
-  require('../util').requireDir(__dirname).forEach(function (loadTests) {
-    loadTests();
-  });
+  require('./compliance');
+  require('./linting');
+  require('./reporters');
+  require('./integration');
 });

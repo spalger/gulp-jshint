@@ -20,7 +20,7 @@ gulp.task('test', ['lint'], function (done) {
     reporter: 'spec'
   });
 
-  m.addFile(__dirname + '/test/specs');
+  m.addFile(__dirname + '/test/specs/index.js');
 
   m.run().on('end', done);
 });

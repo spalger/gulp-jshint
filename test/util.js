@@ -25,20 +25,6 @@ module.exports = {
       contents: contents
     });
   },
-  requireDir: function (dir) {
-    var files = [];
-    var dirs = [];
-    fs.readdirSync(dir).forEach(function (filename) {
-      if (filename === 'index.js') return;
-      var path = join(dir, filename);
-      var stat = fs.statSync(path);
-      (stat.isDirectory() ? dirs : files).push(path);
-    });
-
-    return files.concat(dirs).map(function (path) {
-      return require(path)();
-    }).filter(Boolean);
-  },
   fixture: function (name) {
     return require(fixtureDir + '/' + name);
   },
