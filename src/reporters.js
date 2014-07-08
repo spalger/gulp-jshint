@@ -1,4 +1,4 @@
-var map = require('map-stream');
+var stream = require('./stream');
 var PluginError = require('gulp-util').PluginError;
 
 var gfDir = require('path').dirname(require('./gulpfile-path'));
@@ -6,15 +6,14 @@ var _ = require('lodash');
 var relative = _.memoize(_.partial(require('path').relative, gfDir));
 
 exports.failReporter = function () {
-  return map(function (file, cb) {
+  return stream(function (file, cb) {
     // nothing to report or no errors
     if (!file.jshint || file.jshint.success) return cb(null, file);
-    var errOpt = {
+
+    return cb(new PluginError('gulp-jshint', {
       message: 'JSHint failed for: ' + file.relative,
       showStack: false
-    };
-    var err = new PluginError('gulp-jshint', errOpt);
-    return cb(err, file);
+    }));
   });
 };
 
@@ -52,7 +51,7 @@ exports.reporter = function (reporter, reporterCfg) {
   }
 
   // return stream that reports stuff
-  return map(function (file, cb) {
+  return stream(function (file, cb) {
     // nothing to report or no errors
     if (!file.jshint || file.jshint.success) return cb(null, file);
 

@@ -13,12 +13,12 @@
     "gulpplugin"
   ],
   "dependencies": {
-    "map-stream": "^0.1.0",
-    "jshint": "^2.5.0",
     "gulp-util": "^2.2.5",
-    "rcloader": "^0.1.2",
+    "jshint": "^2.5.0",
+    "lodash": "^2.4.1",
     "minimatch": "^0.3.0",
-    "lodash": "^2.4.1"
+    "rcloader": "^0.1.2",
+    "through2": "~0.5.1"
   },
   "devDependencies": {
     "gulp": "^3.6.2",

@@ -1,16 +1,14 @@
-'use strict';
-
-var map = require('map-stream');
 var PluginError = require('gulp-util').PluginError;
 var reporters = require('./reporters');
 var extract = require('./extract');
 var fileIgnored = require('./file-ignored');
 var makeLint = require('./lint');
+var stream = require('./stream');
 
 var jshintPlugin = function (opt) {
   var lint = makeLint(opt);
 
-  return map(function (file, cb) {
+  return stream(function (file, cb) {
     fileIgnored(file, function (err, ignored) {
       if (err) return cb(err);
       if (ignored) return cb(null, file);
