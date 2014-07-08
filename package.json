@@ -1,12 +1,12 @@
 {
   "name": "gulp-jshint",
   "description": "JSHint plugin for gulp",
-  "version": "1.6.4",
+  "version": "1.7.0",
   "homepage": "http://github.com/spenceralger/gulp-jshint",
   "repository": "git://github.com/spenceralger/gulp-jshint.git",
   "contributors": [
-    "Fractal <contact@wearefractal.com> (http://wearefractal.com/)",
-    "Spencer Alger <spencer@spenceralger.com>"
+    "Spencer Alger <spencer@spenceralger.com>",
+    "Fractal <contact@wearefractal.com> (http://wearefractal.com/)"
   ],
   "main": "./src/index.js",
   "keywords": [
