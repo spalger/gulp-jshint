@@ -36,7 +36,13 @@ module.exports = function (config, handler, flush) {
       handler.call(str, obj);
       done();
     }
-  }, flush);
+  }, function (done) {
+    if (flush) {
+      flush.call(this, done);
+    }
+
+    if (!flush || flush.length === 0) done();
+  });
 
   return str;
 };
