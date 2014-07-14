@@ -22,7 +22,7 @@
 
 ## Usage
 
-```javascript
+```js
 var jshint = require('gulp-jshint');
 var gulp   = require('gulp');
 
@@ -48,7 +48,7 @@ You can pass in any other options and it passes them straight to JSHint. Look at
 
 Adds the following properties to the file object:
 
-```javascript
+```js
   file.jshint.success = true; // or false
   file.jshint.errorCount = 0; // number of errors returned by JSHint
   file.jshint.results = []; // JSHint errors, see [http://jshint.com/docs/reporters/](http://jshint.com/docs/reporters/)
@@ -65,7 +65,7 @@ Adds the following properties to the file object:
 You can choose any [JSHint reporter](https://github.com/jshint/jshint/tree/master/src/reporters)
 when you call
 
-```javascript
+```js
 stuff
   .pipe(jshint())
   .pipe(jshint.reporter('default'))
@@ -75,7 +75,7 @@ stuff
 
 Let's use [jshint-stylish](https://github.com/sindresorhus/jshint-stylish) as an example
 
-```javascript
+```js
 var stylish = require('jshint-stylish');
 
 stuff
@@ -85,7 +85,7 @@ stuff
 
 - OR -
 
-```javascript
+```js
 stuff
   .pipe(jshint())
   .pipe(jshint.reporter('jshint-stylish'))
@@ -110,7 +110,7 @@ stuff
 
 Custom reporters don't interact with this module at all. jshint will add some attributes to the file object and you can add a custom reporter downstream.
 
-```javascript
+```js
 var jshint = require('gulp-jshint');
 var map = require('map-stream');
 
@@ -136,7 +136,7 @@ gulp.task('lint', function() {
 
 Tells JSHint to extract JavaScript from HTML files before linting (see [JSHint CLI flags](http://www.jshint.com/docs/cli/)). Keep in mind that it doesn't override the file's content after extraction. This is your tool of choice to lint web components!
 
-```javascript
+```js
 gulp.task('lintHTML', function() {
   return gulp.src('./src/*.html')
     // if flag is not defined default value is 'auto'
