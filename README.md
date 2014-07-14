@@ -132,6 +132,19 @@ gulp.task('lint', function() {
     .pipe(myReporter);
 });
 ```
+
+### Reporter Configuration
+
+Some reporters have options which, and you can pass them to `jshint.reporter()`. Here is an example of useing verbose mode with the default JSHint reporter.
+
+```js
+gulp.task('lint', function() {
+  return gulp.files('./lib/*.js')
+    .pipe(jshint())
+    .pipe(jshint.reporter('default', { verbose: true }));
+});
+```
+
 ## Extract
 
 Tells JSHint to extract JavaScript from HTML files before linting (see [JSHint CLI flags](http://www.jshint.com/docs/cli/)). Keep in mind that it doesn't override the file's content after extraction. This is your tool of choice to lint web components!
