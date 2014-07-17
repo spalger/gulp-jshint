@@ -1,7 +1,7 @@
 var stream = require('../stream');
 var PluginError = require('gulp-util').PluginError;
 
-module.exports = function () {
+module.exports = function (options) {
   var fails = null;
   var buffer = [];
 
@@ -10,7 +10,9 @@ module.exports = function () {
       // check for failure
       if (file.jshint && !file.jshint.success && !file.jshint.ignored) {
         (fails = fails || []).push(file.path);
-        buffer = false;
+        if (!options.downstream) {
+          buffer = false;
+        }
       }
 
       if (buffer) buffer.push(file);
@@ -21,12 +23,11 @@ module.exports = function () {
           showStack: false
         }));
       }
-      else {
-        // send on the buffered files
-        buffer.forEach(function (file) {
-          this.push(file);
-        }, this);
-      }
+
+      // send on the buffered files
+      Array.isArray(buffer) && buffer.forEach(function (file) {
+        this.push(file);
+      }, this);
     }
   );
 };
