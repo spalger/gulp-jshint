@@ -106,6 +106,14 @@ stuff
   .pipe(jshint.reporter('fail'))
 ```
 
+#### Fail Reporter options
+
+##### options.downstream
+Type: `Boolean`  
+Default: `false`
+
+If you want to continue streaming your files after an error using a [gulp-plumber](https://github.com/floatdrop/gulp-plumber), enabling this option will help you.
+
 ### Custom Reporters
 
 Custom reporters don't interact with this module at all. jshint will add some attributes to the file object and you can add a custom reporter downstream.
