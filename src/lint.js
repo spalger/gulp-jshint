@@ -59,7 +59,6 @@ module.exports = function createLintFunction(userOpts) {
       // get or create file.jshint, we will write all output here
       var out = file.jshint || (file.jshint = {});
       var str = (out.extracted) || file.contents.toString('utf8');
-      str = str.replace(/^\uFEFF/, '');
 
       out.success = jshint(str, cfg, globals);
       if (!out.success) reportErrors(file, out, cfg);
