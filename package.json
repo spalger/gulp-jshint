@@ -13,7 +13,7 @@
     "gulpplugin"
   ],
   "dependencies": {
-    "gulp-util": "^2.2.5",
+    "gulp-util": "^3.0.0",
     "jshint": "^2.5.0",
     "lodash": "^2.4.1",
     "minimatch": "^0.3.0",
