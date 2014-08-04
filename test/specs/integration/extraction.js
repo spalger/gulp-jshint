@@ -66,4 +66,15 @@ describe('with Script Extraction', function () {
       file.should.not.have.property('jshint');
     }
   }));
+
+  it('should pass for HTML file without any JS', lint({
+    file: new tutil.File({
+      path: "fake/file/path.html",
+      contents: new Buffer('<html><head></head></html>', 'utf8')
+    }),
+    eachFile: function (file) {
+      file.jshint.should.have.property('success', true);
+      file.jshint.should.have.property('extracted');
+    }
+  }));
 });

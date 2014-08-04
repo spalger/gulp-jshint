@@ -58,7 +58,7 @@ module.exports = function createLintFunction(userOpts) {
 
       // get or create file.jshint, we will write all output here
       var out = file.jshint || (file.jshint = {});
-      var str = (out.extracted) || file.contents.toString('utf8');
+      var str = _.isString(out.extracted) ? out.extracted : file.contents.toString('utf8');
 
       out.success = jshint(str, cfg, globals);
       if (!out.success) reportErrors(file, out, cfg);
