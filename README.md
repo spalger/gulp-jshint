@@ -127,7 +127,7 @@ var myReporter = map(function (file, cb) {
 });
 
 gulp.task('lint', function() {
-  return gulp.files('./lib/*.js')
+  return gulp.src('./lib/*.js')
     .pipe(jshint())
     .pipe(myReporter);
 });
@@ -139,7 +139,7 @@ Some reporters have options which, and you can pass them to `jshint.reporter()`.
 
 ```js
 gulp.task('lint', function() {
-  return gulp.files('./lib/*.js')
+  return gulp.src('./lib/*.js')
     .pipe(jshint())
     .pipe(jshint.reporter('default', { verbose: true }));
 });
