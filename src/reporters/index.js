@@ -41,7 +41,7 @@ exports.reporter = function (reporter, reporterCfg) {
 
   // return stream that reports stuff
   return stream(function (file, cb) {
-    if (file.jshint && !file.jshint.success && !file.jshint.ignored) {
+    if (file.jshint && !file.jshint.ignored) {
       // merge the reporter config into this files config
       var opt = _.defaults({}, reporterCfg, file.jshint.opt);
 
