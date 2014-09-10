@@ -22,7 +22,7 @@ var ignoreLoader = new RcLoader('.jshintignore', {}, {
   }
 });
 
-// get the .jshintignore closest to the directory containing the gruntFile
+// get the .jshintignore closest to the directory containing the gulpfile
 var cfg = ignoreLoader.for(gfPath);
 
 module.exports = (function () {
