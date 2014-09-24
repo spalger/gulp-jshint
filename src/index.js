@@ -23,7 +23,7 @@ var jshintPlugin = function (opt) {
 
 // expose the reporters
 jshintPlugin.failReporter = reporters.fail;
-jshintPlugin.loadReporter = reporters.load;
+jshintPlugin.loadReporter = reporters.loadReporter;
 jshintPlugin.reporter = reporters.reporter;
 
 // export the extractor
