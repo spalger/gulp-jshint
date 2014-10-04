@@ -2,7 +2,8 @@ var PluginError = require('gulp-util').PluginError;
 var stream = require('../stream');
 var _ = require('lodash');
 
-exports.failReporter = require('./fail');
+exports.fail = require('./fail');
+exports.instafail = require('./instafail');
 
 exports.loadReporter = function (reporter) {
   // we want the function
@@ -30,7 +31,7 @@ exports.reporter = function (reporter, reporterCfg) {
   reporterCfg = reporterCfg || {};
 
   if (reporter === 'fail') {
-    return exports.failReporter(reporterCfg);
+    return exports.fail(reporterCfg);
   }
 
   var rpt = exports.loadReporter(reporter || 'default');

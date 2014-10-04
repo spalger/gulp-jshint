@@ -23,6 +23,7 @@ var jshintPlugin = function (opt) {
 
 // expose the reporters
 jshintPlugin.failReporter = reporters.fail;
+jshintPlugin.instafailReporter = reporters.instafail;
 jshintPlugin.loadReporter = reporters.loadReporter;
 jshintPlugin.reporter = reporters.reporter;
 
