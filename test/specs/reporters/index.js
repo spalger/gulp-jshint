@@ -14,7 +14,7 @@ function FakeFile(content) {
 describe('reporting', function () {
   it('should send success status', function (done) {
     tutil.lint({
-      file: new FakeFile,
+      file: new FakeFile('var a = 0; a += 1;'),
       eachFile: function (file) {
         should(file).property('jshint');
         should(file.jshint).property('success').equal(true);
