@@ -8,19 +8,19 @@ var array = function (obj) {
   return Array.isArray(obj) ? obj : [obj];
 };
 
-var fictionalRoot = '/home/username/sources/project';
+var root = join(__dirname, '..');
 
 module.exports = {
   File: function (opts) {
-    var path = join(fictionalRoot, opts.path);
+    var path = join(root, opts.path);
 
     var contents = opts.contents
       ? new Buffer(opts.contents, 'utf8')
       : fs.readFileSync(join(__dirname, opts.path));
 
     return new gutil.File({
-      cwd: fictionalRoot,
-      base: fictionalRoot,
+      cwd: root,
+      base: root,
       path: path,
       contents: contents
     });

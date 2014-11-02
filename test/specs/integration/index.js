@@ -1,6 +1,6 @@
 describe('integration', function () {
   require('./basic');
   require('./extraction');
-  require('./file-ignores');
+  require('./file-ignored');
   require('./overrides');
 });

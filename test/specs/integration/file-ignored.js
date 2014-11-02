@@ -4,7 +4,7 @@ var jshint = require('../../../src');
 var path = require('path');
 var should = require('should');
 
-describe('file ignores', function () {
+describe('file ignored', function () {
   it('should ignore based on simple directory name', function (done) {
     tutil.lint({
       config: tutil.fixture('.rc-undef'),
@@ -28,6 +28,24 @@ describe('file ignores', function () {
       eachFile: function (file) {
         should(file).not.have.property('jshint');
       }
+    }, done);
+  });
+
+  it('ignores the base path of the file', function (done) {
+    var file = new tutil.File({
+      path: 'index.js',
+      contents: new Buffer('alert();')
+    });
+
+    Object.defineProperty(file, 'base', {
+      get: function () {
+        throw new Error('file.base shouldn\'t be used anywhere');
+      }
+    });
+
+    tutil.lint({
+      file: file,
+      eachFile: function () {}
     }, done);
   });
 });
