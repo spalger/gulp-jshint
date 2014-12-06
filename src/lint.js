@@ -1,8 +1,8 @@
 var RcLoader = require('rcloader');
 var jshint = require('jshint').JSHINT;
 var jshintcli = require('jshint/src/cli');
-var minimatch = require("minimatch");
-var _ = require("lodash");
+var minimatch = require('minimatch');
+var _ = require('lodash');
 
 module.exports = function createLintFunction(userOpts) {
 
