@@ -1,6 +1,6 @@
 var PluginError = require('gulp-util').PluginError;
 var jshintcli = require('jshint/src/cli');
-var fileIgnored = require('./file-ignored');
+var fileIgnored = require('./fileIgnored');
 var stream = require('./stream');
 
 module.exports = function extract(when) {

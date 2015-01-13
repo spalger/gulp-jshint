@@ -1,7 +1,7 @@
 var PluginError = require('gulp-util').PluginError;
 var reporters = require('./reporters');
 var extract = require('./extract');
-var fileIgnored = require('./file-ignored');
+var fileIgnored = require('./fileIgnored');
 var makeLint = require('./lint');
 var stream = require('./stream');
 
