@@ -21,7 +21,7 @@
     "through2": "~0.6.1"
   },
   "devDependencies": {
-    "gulp": "^3.6.2",
+    "gulp": "~3.8.10",
     "mocha": "^1.18.2",
     "should": "^4.0.4"
   },

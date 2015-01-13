@@ -1,12 +1,11 @@
 var stream = require('../../src/stream');
-var should = require('should');
 
 describe('custom through2 wrapper', function () {
   it('should make callbacks optional', function (done) {
     var a = 0;
     var b = 0;
 
-    var s = stream(function (obj) {
+    var s = stream(function () {
       a++;
       // discard all objects
     });
@@ -27,8 +26,8 @@ describe('custom through2 wrapper', function () {
   });
 
   it('should timeout if the callback is never called', function (done) {
-    stream({ timeout: 1 }, function (obj, cb) {
-      // not going to call callback
+    stream({ timeout: 1 }, function (file, cb) {
+      cb = null; // not going to call callback
     })
     .on('error', function (err) {
       err.message.should.match(/timeout/i);
@@ -46,7 +45,7 @@ describe('custom through2 wrapper', function () {
       stream(function () {}, function () {
         flushed ++;
       })
-      .on('finish', function (err) {
+      .on('finish', function () {
         flushed.should.equal(1);
         done();
       })

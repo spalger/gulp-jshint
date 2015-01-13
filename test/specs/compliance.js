@@ -1,27 +1,16 @@
-var gutil = require('gulp-util');
+var Fixture = require('../util').Fixture;
 var jshint = require('../../src');
-var should = require('should');
 
 describe('Stream compliance', function () {
   it('file should pass through', function (done) {
     var a = 0;
 
-    var fakeFile = new gutil.File({
-      path: './test/fixture/file.js',
-      cwd: './test/',
-      base: './test/fixture/',
-      contents: new Buffer('wadup();')
-    });
+    var fakeFile = new Fixture('undef');
 
     var stream = jshint();
     stream.on('data', function (newFile) {
-      should.exist(newFile);
-      should.exist(newFile.path);
-      should.exist(newFile.relative);
-      should.exist(newFile.contents);
-      newFile.path.should.equal('./test/fixture/file.js');
-      newFile.relative.should.equal('file.js');
-      ++a;
+      a++;
+      newFile.should.equal(fakeFile);
     });
 
     stream.once('end', function () {

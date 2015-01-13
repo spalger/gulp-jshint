@@ -1,4 +1,3 @@
-var PluginError = require('gulp-util').PluginError;
 var jshintcli = require('jshint/src/cli');
 var fileIgnored = require('./fileIgnored');
 var stream = require('./stream');

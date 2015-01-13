@@ -1,26 +1,13 @@
-var gutil = require('gulp-util');
+var File = require('../../util').File;
+var Fixture = require('../../util').Fixture;
+var RcFixture = require('../../util').RcFixture;
 var jshint = require('../../../src');
-
-var readFile = function (path) {
-  path = require('path').join(__dirname, path);
-  return require('fs').readFileSync(path);
-};
 
 describe('overrides option', function () {
   it('should override the config when matching patterns are found', function (done) {
-    var fakeFile = new gutil.File({
-      path: './test/fixture/fileIndent4.js',
-      base: './',
-      contents: new Buffer('wadup();')
-    });
+    var contents = Fixture('undef').contents;
+    var jshintrc = new RcFixture('.jshintrc');
 
-    var fakeFile2 = new gutil.File({
-      path: './test/fixture/fileIndent8.js',
-      base: './',
-      contents: new Buffer('wadup();')
-    });
-
-    var jshintrc = JSON.parse(readFile('../../../.jshintrc'));
     jshintrc.overrides = {
       "*Indent4.js": {
         "indent": 4
@@ -45,8 +32,8 @@ describe('overrides option', function () {
       done();
     });
 
-    stream.write(fakeFile);
-    stream.write(fakeFile2);
+    stream.write(new File({ path: './test/fixture/fileIndent4.js', contents: contents }));
+    stream.write(new File({ path: './test/fixture/fileIndent8.js', contents: contents }));
     stream.end();
   });
 });

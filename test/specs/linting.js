@@ -1,26 +1,12 @@
-var gutil = require('gulp-util');
+var Fixture = require('../util').Fixture;
 var jshint = require('../../src');
 
 describe('linting', function () {
   it('should jshint two files', function (done) {
     var a = 0;
 
-    var fakeFile = new gutil.File({
-      path: './test/fixture/file.js',
-      cwd: './test/',
-      base: './test/fixture/',
-      contents: new Buffer('wadup();')
-    });
-
-    var fakeFile2 = new gutil.File({
-      path: './test/fixture/file2.js',
-      cwd: './test/',
-      base: './test/fixture/',
-      contents: new Buffer('wadup();')
-    });
-
     var stream = jshint();
-    stream.on('data', function (newFile) {
+    stream.on('data', function () {
       ++a;
     });
 
@@ -29,8 +15,8 @@ describe('linting', function () {
       done();
     });
 
-    stream.write(fakeFile);
-    stream.write(fakeFile2);
+    stream.write(new Fixture('undef'));
+    stream.write(new Fixture('undef'));
     stream.end();
   });
 });

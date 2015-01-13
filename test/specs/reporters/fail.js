@@ -1,15 +1,12 @@
 var jshint = require('../../../src');
-var tutil = require('../../util');
+var Fixture = require('../../util').Fixture;
 var stream = require('../../../src/stream');
 var should = require('should');
 var EventEmitter = require('events').EventEmitter;
 
 describe('jshint.reporter(fail)', function () {
   it('should emit error on failure', function (done) {
-    var fakeFile = new tutil.File({
-      path: './test/fixture/file.js',
-      contents: new Buffer('doe =')
-    });
+    var fakeFile = new Fixture('undef-incomp');
 
     var stream = jshint();
     var failStream = jshint.reporter('fail');
@@ -27,22 +24,10 @@ describe('jshint.reporter(fail)', function () {
 
   var files = function (fails) {
     return [
-      new tutil.File({
-        path: './test/fixture/valid1.js',
-        contents: new Buffer('var a = 1;')
-      }),
-      fails && new tutil.File({
-        path: './test/fixture/invalid1.js',
-        contents: new Buffer('doe =')
-      }),
-      fails && new tutil.File({
-        path: './test/fixture/invalid2.js',
-        contents: new Buffer('fum =')
-      }),
-      new tutil.File({
-        path: './test/fixture/valid2.js',
-        contents: new Buffer('var b = 1;')
-      })
+      new Fixture('valid1'),
+      fails && new Fixture('undef-incomp'),
+      fails && new Fixture('undef-incomp2'),
+      new Fixture('valid2')
     ].filter(Boolean);
   };
 
@@ -56,12 +41,12 @@ describe('jshint.reporter(fail)', function () {
       .pipe(jshint())
       .pipe(reporter = jshint.reporter('fail'))
       .on('error', function (err) {
-        err.message.should.match(/invalid1/);
-        err.message.should.match(/invalid2/);
+        err.message.should.match(/incomp/);
+        err.message.should.match(/incomp2/);
         // files will flow through if the error is "handled"
         errored = true;
       })
-      .pipe(output = stream(function (file) {
+      .pipe(output = stream(function () {
         errored.should.equal(true);
         reporter.unpipe(output);
         done();
@@ -79,7 +64,7 @@ describe('jshint.reporter(fail)', function () {
     input
       .pipe(jshint())
       .pipe(jshint.reporter('fail'))
-      .pipe(stream(function (file) {
+      .pipe(stream(function () {
         i++;
       }, function () {
         i.should.equal(2);
@@ -104,7 +89,7 @@ describe('jshint.reporter(fail)', function () {
     input
       .pipe(jshint())
       .pipe(reporter = jshint.reporter('fail', { buffer: false }))
-      .pipe(stream(function (file) {
+      .pipe(stream(function () {
         if (i === 0) {
           errored.should.equal(false);
         }

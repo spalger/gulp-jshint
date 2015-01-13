@@ -1,11 +1,11 @@
-var gutil = require('gulp-util');
-var tutil = require('../../util');
+var RcFixture = require('../../util').RcFixture;
+var lint = require('../../util').lint;
+var File = require('../../util').File;
 var jshint = require('../../../src');
 var should = require('should');
-var path = require('path');
 
-function FakeFile(content) {
-  return new tutil.File({
+function fileContent(content) {
+  return new File({
     path: './test/fixture/file.js',
     contents: content || 'wadup();'
   });
@@ -13,8 +13,8 @@ function FakeFile(content) {
 
 describe('reporting', function () {
   it('should send success status', function (done) {
-    tutil.lint({
-      file: new FakeFile('var a = 0; a += 1;'),
+    lint({
+      file: fileContent('var a = 0; a += 1;'),
       eachFile: function (file) {
         should(file).property('jshint');
         should(file.jshint).property('success').equal(true);
@@ -27,8 +27,8 @@ describe('reporting', function () {
   });
 
   it('should send failure status', function (done) {
-    tutil.lint({
-      file: new FakeFile('doe ='),
+    lint({
+      file: fileContent('doe ='),
       eachFile: function (file) {
         should(file).have.property('jshint');
 
@@ -42,14 +42,14 @@ describe('reporting', function () {
   it('should load jshint file and pass', function (done) {
     var a = 0;
 
-    var fakeFile = new gutil.File({
+    var fakeFile = new File({
       path: './test/fixture/file.js',
       cwd: './test/',
       base: './test/fixture/',
       contents: new Buffer('wadup = 123;')
     });
 
-    var stream = jshint(tutil.fixture('.rc-!undef'));
+    var stream = jshint(RcFixture('.rc-!undef'));
     stream.on('data', function (newFile) {
       ++a;
       should.exist(newFile.jshint.success);
@@ -74,7 +74,7 @@ describe('jshint.reporter()', function () {
   it('file should pass through', function (done) {
     var a = 0;
 
-    var fakeFile = new gutil.File({
+    var fakeFile = new File({
       path: './test/fixture/file.js',
       cwd: './test/',
       base: './test/fixture/',
@@ -83,12 +83,7 @@ describe('jshint.reporter()', function () {
 
     var stream = jshint.reporter();
     stream.on('data', function (newFile) {
-      should.exist(newFile);
-      should.exist(newFile.path);
-      should.exist(newFile.relative);
-      should.exist(newFile.contents);
-      newFile.path.should.equal('./test/fixture/file.js');
-      newFile.relative.should.equal('file.js');
+      newFile.should.equal(fakeFile);
       ++a;
     });
 
@@ -102,7 +97,7 @@ describe('jshint.reporter()', function () {
   });
 
   it('file should trigger reporter when .jshint exists', function (done) {
-    var fakeFile = new gutil.File({
+    var fakeFile = new File({
       path: './test/fixture/file.js',
       cwd: './test/',
       base: './test/fixture/',

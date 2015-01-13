@@ -1,21 +1,13 @@
-var gutil = require('gulp-util');
-var tutil = require('../../util');
-var jshint = require('../../../src');
-var path = require('path');
+var RcFixture = require('../../util').RcFixture;
+var Fixture = require('../../util').Fixture;
+var lint = require('../../util').lint;
 var should = require('should');
-
-function FakeFile(argument) {
-  return new tutil.File({
-    path: 'fixture/file.js',
-    contents: 'wadup = 123;'
-  });
-}
 
 describe('basic', function () {
   it('should use passed config and fail', function (done) {
-    tutil.lint({
-      args: tutil.fixture('.rc-undef'),
-      files: new FakeFile,
+    lint({
+      args: new RcFixture('.rc-undef'),
+      file: new Fixture('undef'),
       eachFile: function (newFile) {
         should.exist(newFile.jshint.success);
         newFile.jshint.success.should.equal(false);
@@ -28,9 +20,9 @@ describe('basic', function () {
   });
 
   it('should use passed config and pass', function (done) {
-    tutil.lint({
-      config: tutil.fixture('.rc-!undef'),
-      file: new FakeFile,
+    lint({
+      config: new RcFixture('.rc-!undef'),
+      file: new Fixture('undef'),
       eachFile: function (newFile) {
         should.exist(newFile.jshint.success);
         newFile.jshint.success.should.equal(true);
