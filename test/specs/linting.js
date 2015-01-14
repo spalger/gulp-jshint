@@ -19,4 +19,24 @@ describe('linting', function () {
     stream.write(new Fixture('undef'));
     stream.end();
   });
+
+  it('should allow overriding jshint', function (done) {
+    var count = 0;
+    var stream = jshint({
+      jshint: function () {
+        count ++;
+        return true;
+      }
+    });
+
+    stream.once('end', function () {
+      count.should.equal(2);
+      done();
+    });
+
+    stream.resume();
+    stream.write(new Fixture('undef'));
+    stream.write(new Fixture('undef'));
+    stream.end();
+  });
 });

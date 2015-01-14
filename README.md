@@ -41,28 +41,34 @@ Plugin options:
   - Default is `true`
   - When `false` do not lookup `.jshintrc` files. See the [JSHint docs](http://www.jshint.com/docs/) for more info.
 
+- `jshint`
+  - Default is `require('jshint').JSHINT`
+  - Override the function called to lint the code. This can allows using a different version of JSHINT or an alternate module like `jshint-jsx`.
+
 
 You can pass in any other options and it passes them straight to JSHint. Look at their README for more info. You can also pass in the location of your jshintrc file as a string and it will load options from it.
 
 For example, to load your configuration from your `package.json` exclusively and avoid lookup overhead you can do:
 
-    var packageJSON  = require('./package');
-    var jshintConfig = packageJSON.jshintConfig;
-    
-    jshintConfig.lookup = false;
-    
-    gulp.src('yo').pipe(jshint(jshintConfig));
+```js
+var packageJSON  = require('./package');
+var jshintConfig = packageJSON.jshintConfig;
+
+jshintConfig.lookup = false;
+
+gulp.src('yo').pipe(jshint(jshintConfig));
+```
 
 ## Results
 
 Adds the following properties to the file object:
 
 ```js
-  file.jshint.success = true; // or false
-  file.jshint.errorCount = 0; // number of errors returned by JSHint
-  file.jshint.results = []; // JSHint errors, see [http://jshint.com/docs/reporters/](http://jshint.com/docs/reporters/)
-  file.jshint.data = []; // JSHint returns details about implied globals, cyclomatic complexity, etc
-  file.jshint.opt = {}; // The options you passed to JSHint
+file.jshint.success = true; // or false
+file.jshint.errorCount = 0; // number of errors returned by JSHint
+file.jshint.results = []; // JSHint errors, see [http://jshint.com/docs/reporters/](http://jshint.com/docs/reporters/)
+file.jshint.data = []; // JSHint returns details about implied globals, cyclomatic complexity, etc
+file.jshint.opt = {}; // The options you passed to JSHint
 ```
 
 ## Reporters

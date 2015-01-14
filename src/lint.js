@@ -1,10 +1,10 @@
 var RcLoader = require('rcloader');
-var jshint = require('jshint').JSHINT;
 var jshintcli = require('jshint/src/cli');
 var minimatch = require('minimatch');
 var _ = require('lodash');
 
 module.exports = function createLintFunction(userOpts) {
+  userOpts = userOpts || {};
 
   var rcLoader = new RcLoader('.jshintrc', userOpts, {
     loader: function (path) {
@@ -14,7 +14,13 @@ module.exports = function createLintFunction(userOpts) {
     }
   });
 
-  var reportErrors = function (file, out, cfg) {
+  var jshint = require('jshint').JSHINT;
+  if (userOpts.jshint) {
+    jshint = userOpts.jshint;
+    delete userOpts.jshint;
+  }
+
+  function reportErrors(file, out, cfg) {
     var filePath = (file.path || 'stdin');
 
     out.results = jshint.errors.map(function (err) {
@@ -25,13 +31,14 @@ module.exports = function createLintFunction(userOpts) {
     out.opt = cfg;
     out.data = [jshint.data()];
     out.data[0].file = filePath;
-  };
+  }
 
-  return function lint(file, cb) {
+  function lint(file, cb) {
     // pass through dirs, streaming files, etc.
     if (!file.isBuffer()) {
       return cb(null, file);
     }
+
     rcLoader.for(file.path, function (err, cfg) {
       if (err) return cb(err);
 
@@ -65,5 +72,7 @@ module.exports = function createLintFunction(userOpts) {
 
       return cb(null, file);
     });
-  };
+  }
+
+  return lint;
 };
