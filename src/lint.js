@@ -7,10 +7,9 @@ module.exports = function createLintFunction(userOpts) {
   userOpts = userOpts || {};
 
   var jshint = 'jshint';
-
-  if (userOpts.jshint) {
-    jshint = userOpts.jshint;
-    delete userOpts.jshint;
+  if (userOpts.linter) {
+    jshint = userOpts.linter;
+    delete userOpts.linter;
   }
 
   if (_.isString(jshint)) jshint = require(jshint);

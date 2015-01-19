@@ -41,14 +41,14 @@ Plugin options:
   - Default is `true`
   - When `false` do not lookup `.jshintrc` files. See the [JSHint docs](http://www.jshint.com/docs/) for more info.
 
-- `jshint`
+- `linter`
   - Default is `"jshint"`
-  - Set to the name of a module or a function to override the module used to actually lint the code. This allows using different JSHINT versions or an alternate linter like `"jsxhint"`.
+  - Set to the name of a module to use for linting the code. This enables using an alternate (but jshint compatible) linter like `"jsxhint"`.
 
   ```js
   gulp.task('lint', function() {
     return gulp.src('./lib/*.js')
-      .pipe(jshint({ jshint: 'jsxhint' }))
+      .pipe(jshint({ linter: 'jsxhint' }))
       .pipe(...);
   });
   ```
