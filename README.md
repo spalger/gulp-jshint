@@ -42,8 +42,18 @@ Plugin options:
   - When `false` do not lookup `.jshintrc` files. See the [JSHint docs](http://www.jshint.com/docs/) for more info.
 
 - `jshint`
-  - Default is `require('jshint').JSHINT`
-  - Override the function called to lint the code. This can allows using a different version of JSHINT or an alternate module like `jshint-jsx`.
+  - Default is the bundled version of jshint
+  - Override the function called to lint the code. This can allows using a different version of JSHINT or an alternate module.
+
+  ```js
+  gulp.task('lint', function() {
+    return gulp.src('./lib/*.js')
+      .pipe(jshint({
+        jshint: require('jsxhint')
+      }))
+      .pipe(...);
+  });
+  ```
 
 
 You can pass in any other options and it passes them straight to JSHint. Look at their README for more info. You can also pass in the location of your jshintrc file as a string and it will load options from it.
