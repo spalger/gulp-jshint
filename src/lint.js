@@ -6,6 +6,21 @@ var _ = require('lodash');
 module.exports = function createLintFunction(userOpts) {
   userOpts = userOpts || {};
 
+  var jshint = require('jshint').JSHINT;
+  if (userOpts.jshint) {
+    jshint = userOpts.jshint;
+    delete userOpts.jshint;
+  }
+
+  if (_.isString(jshint)) {
+    jshint = require('jshint');
+  }
+
+  // shortcut to allow passing require('jshint');
+  if (_.isFunction(jshint.JSHINT)) {
+    jshint = jshint.JSHINT;
+  }
+
   var rcLoader = new RcLoader('.jshintrc', userOpts, {
     loader: function (path) {
       var cfg = jshintcli.loadConfig(path);
@@ -13,12 +28,6 @@ module.exports = function createLintFunction(userOpts) {
       return cfg;
     }
   });
-
-  var jshint = require('jshint').JSHINT;
-  if (userOpts.jshint) {
-    jshint = userOpts.jshint;
-    delete userOpts.jshint;
-  }
 
   function reportErrors(file, out, cfg) {
     var filePath = (file.path || 'stdin');
