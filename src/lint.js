@@ -6,20 +6,15 @@ var _ = require('lodash');
 module.exports = function createLintFunction(userOpts) {
   userOpts = userOpts || {};
 
-  var jshint = require('jshint').JSHINT;
+  var jshint = 'jshint';
+
   if (userOpts.jshint) {
     jshint = userOpts.jshint;
     delete userOpts.jshint;
   }
 
-  if (_.isString(jshint)) {
-    jshint = require('jshint');
-  }
-
-  // shortcut to allow passing require('jshint');
-  if (_.isFunction(jshint.JSHINT)) {
-    jshint = jshint.JSHINT;
-  }
+  if (_.isString(jshint)) jshint = require(jshint);
+  if (_.isFunction(jshint.JSHINT)) jshint = jshint.JSHINT;
 
   var rcLoader = new RcLoader('.jshintrc', userOpts, {
     loader: function (path) {
