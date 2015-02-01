@@ -15,14 +15,14 @@
   "dependencies": {
     "gulp-util": "^3.0.0",
     "jshint": "^2.5.6",
-    "lodash": "^2.4.1",
-    "minimatch": "^1.0.0",
+    "lodash": "^3.0.1",
+    "minimatch": "^2.0.1",
     "rcloader": "^0.1.2",
     "through2": "~0.6.1"
   },
   "devDependencies": {
-    "gulp": "~3.8.10",
-    "mocha": "^1.18.2",
+    "gulp": "^3.8.10",
+    "mocha": "^2.1.0",
     "should": "^4.0.4"
   },
   "scripts": {

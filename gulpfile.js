@@ -22,5 +22,5 @@ gulp.task('test', ['lint'], function (done) {
 
   m.addFile(__dirname + '/test/specs/index.js');
 
-  m.run().on('end', done);
+  m.run(done);
 });
