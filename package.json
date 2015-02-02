@@ -17,7 +17,7 @@
     "jshint": "^2.5.6",
     "lodash": "^3.0.1",
     "minimatch": "^2.0.1",
-    "rcloader": "^0.1.2",
+    "rcloader": "0.1.2",
     "through2": "~0.6.1"
   },
   "devDependencies": {
