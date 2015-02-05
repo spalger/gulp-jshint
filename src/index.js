@@ -4,10 +4,10 @@ var fileIgnored = require('./fileIgnored');
 var makeLint = require('./lint');
 var stream = require('./stream');
 
-var jshintPlugin = function (opt) {
+var jshintPlugin = function (opt, streamConfig) {
   var lint = makeLint(opt);
 
-  return stream(function (file, cb) {
+  return stream(streamConfig, function (file, cb) {
     fileIgnored(file, function (err, ignored) {
       if (err) return cb(err);
       if (ignored) return cb(null, file);
