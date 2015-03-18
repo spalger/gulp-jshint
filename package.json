@@ -2,8 +2,8 @@
   "name": "gulp-jshint",
   "description": "JSHint plugin for gulp",
   "version": "1.9.2",
-  "homepage": "http://github.com/spenceralger/gulp-jshint",
-  "repository": "git://github.com/spenceralger/gulp-jshint.git",
+  "homepage": "http://github.com/spalger/gulp-jshint",
+  "repository": "git://github.com/spalger/gulp-jshint.git",
   "contributors": [
     "Spencer Alger <spencer@spenceralger.com>",
     "Fractal <contact@wearefractal.com> (http://wearefractal.com/)"
@@ -34,7 +34,7 @@
   "licenses": [
     {
       "type": "MIT",
-      "url": "http://github.com/spenceralger/gulp-jshint/raw/master/LICENSE"
+      "url": "http://github.com/spalger/gulp-jshint/raw/master/LICENSE"
     }
   ]
 }
