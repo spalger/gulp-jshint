@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/spenceralger/gulp-jshint.svg?branch=master)](https://travis-ci.org/spenceralger/gulp-jshint)
+[![Build Status](https://travis-ci.org/spalger/gulp-jshint.svg?branch=master)](https://travis-ci.org/spalger/gulp-jshint)
 
 ## Information
 
@@ -48,9 +48,9 @@ For example, to load your configuration from your `package.json` exclusively and
 
     var packageJSON  = require('./package');
     var jshintConfig = packageJSON.jshintConfig;
-    
+
     jshintConfig.lookup = false;
-    
+
     gulp.src('yo').pipe(jshint(jshintConfig));
 
 ## Results

@@ -5,7 +5,7 @@
   "homepage": "http://github.com/spalger/gulp-jshint",
   "repository": "git://github.com/spalger/gulp-jshint.git",
   "contributors": [
-    "Spencer Alger <spencer@spenceralger.com>",
+    "Spencer Alger <email@spalger.com>",
     "Fractal <contact@wearefractal.com> (http://wearefractal.com/)"
   ],
   "main": "./src/index.js",
