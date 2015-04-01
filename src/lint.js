@@ -1,10 +1,35 @@
+var PluginError = require('gulp-util').PluginError;
 var RcLoader = require('rcloader');
-var jshint = require('jshint').JSHINT;
 var jshintcli = require('jshint/src/cli');
 var minimatch = require('minimatch');
 var _ = require('lodash');
 
 module.exports = function createLintFunction(userOpts) {
+  userOpts = userOpts || {};
+
+  // Default jshint
+  // Need to assign within the createLintFunction code,
+  // else repeated requires (like in tests) will
+  // not update the variable
+  var jshint = require('jshint').JSHINT;
+
+  if (userOpts.linter) {
+    if (_.isString(userOpts.linter)) {
+      // require throws an error if the component can't be found,
+      // so we're guaranteed that `require(jshint)` will not be undefined
+      jshint = require(userOpts.linter).JSHINT;
+    } else { // should be a function
+      jshint = userOpts.linter; 
+    }    
+
+    if (!_.isFunction(jshint)) {
+      throw new PluginError('gulp-jshint',
+        'Invalid linter "'+ userOpts.linter + '". Must be a function or requirable package.'
+      );
+    }
+
+    delete userOpts.linter;
+  }
 
   var rcLoader = new RcLoader('.jshintrc', userOpts, {
     loader: function (path) {
