@@ -22,6 +22,52 @@ describe('jshint.reporter(fail)', function () {
     stream.end();
   });
 
+  it('should ignore warnings', function (done) {
+    var fakeFile = new Fixture('warn');
+    var input = stream();
+    var output;
+    var reporter;
+    var errored = false;
+
+    input
+      .pipe(jshint())
+      .pipe(reporter = jshint.reporter('fail', { ignoreWarning: true }))
+      .on('error', function () {
+        errored = true;
+      })
+      .pipe(output = stream(function () {
+        errored.should.be.false;
+        reporter.unpipe(output);
+        done();
+      }));
+
+      input.write(fakeFile);
+      input.end();
+  });
+
+  it('should not ignore warnings', function (done) {
+    var fakeFile = new Fixture('warn');
+    var input = stream();
+    var output;
+    var reporter;
+    var errored = false;
+
+    input
+      .pipe(jshint())
+      .pipe(reporter = jshint.reporter('fail', { ignoreWarning: false }))
+      .on('error', function () {
+        errored = true;
+      })
+      .pipe(output = stream(function () {
+        errored.should.be.true;
+        reporter.unpipe(output);
+        done();
+      }));
+
+      input.write(fakeFile);
+      input.end();
+  });
+
   var files = function (fails) {
     return [
       new Fixture('valid1'),
