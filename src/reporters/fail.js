@@ -37,7 +37,7 @@ module.exports = function (opts) {
     }, function flush() {
       var failOnWarning = !opts.ignoreWarning && messages.warning;
       var failOnInfo = !opts.ignoreInfo && messages.info;
-      if (fails && (failOnWarning || failOnInfo)) {
+      if (fails && (messages.error || failOnWarning || failOnInfo)) {
         this.emit('error', new PluginError('gulp-jshint', {
           message: 'JSHint failed for: ' + fails.join(', '),
           showStack: false
