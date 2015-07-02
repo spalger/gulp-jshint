@@ -25,17 +25,6 @@ describe('custom through2 wrapper', function () {
     s.end({});
   });
 
-  it('should timeout if the callback is never called', function (done) {
-    stream({ timeout: 1 }, function (file, cb) {
-      cb = null; // not going to call callback
-    })
-    .on('error', function (err) {
-      err.message.should.match(/timeout/i);
-      done();
-    })
-    .end({});
-  });
-
   it('should call flush just before writing is finished', function (done) {
     var flushed = 0;
 
