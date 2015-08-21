@@ -71,12 +71,14 @@ You can pass in any other options and it passes them straight to JSHint. Look at
 
 For example, to load your configuration from your `package.json` exclusively and avoid lookup overhead you can do:
 
-    var packageJSON  = require('./package');
-    var jshintConfig = packageJSON.jshintConfig;
+```js
+var packageJSON  = require('./package');
+var jshintConfig = packageJSON.jshintConfig;
 
-    jshintConfig.lookup = false;
+jshintConfig.lookup = false;
 
-    gulp.src('yo').pipe(jshint(jshintConfig));
+gulp.src('yo').pipe(jshint(jshintConfig));
+```
 
 ## Results
 
