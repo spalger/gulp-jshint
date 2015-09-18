@@ -171,7 +171,7 @@ gulp.task('lint', function() {
 
 ### Reporter Configuration
 
-Some reporters have options which, and you can pass them to `jshint.reporter()`. Here is an example of useing verbose mode with the default JSHint reporter.
+Some reporters have options which, and you can pass them to `jshint.reporter()`. Here is an example of using verbose mode with the default JSHint reporter.
 
 ```js
 gulp.task('lint', function() {
