@@ -1,3 +1,4 @@
+var path = require('path');
 var stream = require('../stream');
 var PluginError = require('gulp-util').PluginError;
 var _ = require('lodash');
@@ -29,7 +30,7 @@ module.exports = function (opts) {
 
       // check for failure
       if (file.jshint && !file.jshint.success && !file.jshint.ignored) {
-        (fails = fails || []).push(file.path);
+        (fails = fails || []).push(path.relative(process.cwd(), file.path));
       }
 
       // buffer or pass downstream
