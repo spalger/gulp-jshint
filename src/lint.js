@@ -1,3 +1,4 @@
+var path = require('path');
 var PluginError = require('gulp-util').PluginError;
 var RcLoader = require('rcloader');
 var jshintcli = require('jshint/src/cli');
@@ -40,7 +41,7 @@ module.exports = function createLintFunction(userOpts) {
   });
 
   var reportErrors = function (file, out, cfg) {
-    var filePath = (file.path || 'stdin');
+    var filePath = file.path ? path.relative(process.cwd(), file.path): 'stdin';
 
     out.results = jshint.errors.map(function (err) {
       if (!err) return;
