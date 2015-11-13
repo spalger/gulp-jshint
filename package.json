@@ -14,7 +14,7 @@
   ],
   "dependencies": {
     "gulp-util": "^3.0.0",
-    "jshint": "^2.7.0",
+    "jshint": "2.7.0",
     "lodash": "^3.0.1",
     "minimatch": "^2.0.1",
     "rcloader": "0.1.2",
