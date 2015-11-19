@@ -1,5 +1,9 @@
 language: node_js
+install:
+  - npm install
+  - npm install jshint
+sudo: false
 node_js:
-  # - "0.9"
   - "0.10"
-  - "0.11"
+  - "0.12"
+  - "4.1"
