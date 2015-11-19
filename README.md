@@ -18,7 +18,11 @@
 
 ## Install
 
-    npm install jshint gulp-jshint --save-dev
+```sh
+npm install jshint gulp-jshint --save-dev
+```
+
+***NOTE:*** as of 2.0 jshint must to be installed with gulp-jshint.
 
 ## Usage
 
