@@ -1,7 +1,7 @@
 {
   "name": "gulp-jshint",
   "description": "JSHint plugin for gulp",
-  "version": "1.12.0",
+  "version": "2.0.0",
   "homepage": "http://github.com/spalger/gulp-jshint",
   "repository": "git://github.com/spalger/gulp-jshint.git",
   "contributors": [
