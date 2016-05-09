@@ -1,4 +1,4 @@
-var _ = require('lodash');
+var isString = require('lodash/isString');
 var jshint = require('../');
 var gutil = require('gulp-util');
 var join = require('path').join;
@@ -13,7 +13,7 @@ function File(opts) {
   if (!(this instanceof File)) return new File(opts);
 
   opts = opts || {};
-  if (_.isString(opts)) {
+  if (isString(opts)) {
     opts = { path: opts.replace(/^fixture\//, 'test/fixtures/') };
   }
 
