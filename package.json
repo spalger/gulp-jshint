@@ -3,7 +3,10 @@
   "description": "JSHint plugin for gulp",
   "version": "2.0.0",
   "homepage": "http://github.com/spalger/gulp-jshint",
-  "repository": "git://github.com/spalger/gulp-jshint.git",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/spalger/gulp-jshint.git"
+  },
   "contributors": [
     "Spencer Alger <email@spalger.com>",
     "Fractal <contact@wearefractal.com> (http://wearefractal.com/)"
@@ -14,7 +17,7 @@
   ],
   "dependencies": {
     "gulp-util": "^3.0.0",
-    "lodash": "^3.0.1",
+    "lodash": "^4.12.0",
     "minimatch": "^2.0.1",
     "rcloader": "0.1.2",
     "through2": "~0.6.1"
