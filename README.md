@@ -22,7 +22,7 @@
 npm install jshint gulp-jshint --save-dev
 ```
 
-***NOTE:*** as of 2.0 jshint must to be installed with gulp-jshint.
+***NOTE:*** as of 2.0 jshint must be installed with gulp-jshint.
 
 ## Usage
 
