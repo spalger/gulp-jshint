@@ -6,6 +6,10 @@ module.exports = function extract(when) {
   when = when || 'auto';
 
   return stream(function (file, cb) {
+	  if (!file.isBuffer()) {
+		  return cb(null, file);
+	  }
+	
     fileIgnored(file, function (err, ignored) {
       if (err) return cb(err);
       if (ignored) return cb(null, file);
