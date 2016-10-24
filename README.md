@@ -27,8 +27,8 @@ npm install jshint gulp-jshint --save-dev
 ## Usage
 
 ```js
-var jshint = require('gulp-jshint');
-var gulp   = require('gulp');
+const jshint = require('gulp-jshint');
+const gulp   = require('gulp');
 
 gulp.task('lint', function() {
   return gulp.src('./lib/*.js')
@@ -54,7 +54,7 @@ Plugin options:
       gulp.task('lint', function() {
         return gulp.src('./lib/*.js')
           .pipe(jshint({ linter: 'some-jshint-module' }))
-          .pipe(...);
+          .pipe(/*...*/);
       });
     ```
 
@@ -67,7 +67,7 @@ Plugin options:
           // expose the normal jshint function as JSHINT and the
           // jsxhint function as JSXHINT
           .pipe(jshint({ linter: require('jshint-jsx').JSXHINT }))
-          .pipe(...);
+          .pipe(/*...*/);
       });
     ```
 
@@ -76,8 +76,8 @@ You can pass in any other options and it passes them straight to JSHint. Look at
 For example, to load your configuration from your `package.json` exclusively and avoid lookup overhead you can do:
 
 ```js
-var packageJSON  = require('./package');
-var jshintConfig = packageJSON.jshintConfig;
+const pkg = require('./package');
+const jshintConfig = pkg.jshintConfig;
 
 jshintConfig.lookup = false;
 
@@ -89,11 +89,11 @@ gulp.src('yo').pipe(jshint(jshintConfig));
 Adds the following properties to the file object:
 
 ```js
-  file.jshint.success = true; // or false
-  file.jshint.errorCount = 0; // number of errors returned by JSHint
-  file.jshint.results = []; // JSHint errors, see [http://jshint.com/docs/reporters/](http://jshint.com/docs/reporters/)
-  file.jshint.data = []; // JSHint returns details about implied globals, cyclomatic complexity, etc
-  file.jshint.opt = {}; // The options you passed to JSHint
+file.jshint.success = true; // or false
+file.jshint.errorCount = 0; // number of errors returned by JSHint
+file.jshint.results = []; // JSHint errors, see [http://jshint.com/docs/reporters/](http://jshint.com/docs/reporters/)
+file.jshint.data = []; // JSHint returns details about implied globals, cyclomatic complexity, etc
+file.jshint.opt = {}; // The options you passed to JSHint
 ```
 
 ## Reporters
@@ -116,7 +116,7 @@ stuff
 Let's use [jshint-stylish](https://github.com/sindresorhus/jshint-stylish) as an example
 
 ```js
-var stylish = require('jshint-stylish');
+const stylish = require('jshint-stylish');
 
 stuff
   .pipe(jshint())
@@ -151,18 +151,24 @@ stuff
 Custom reporters don't interact with this module at all. jshint will add some attributes to the file object and you can add a custom reporter downstream.
 
 ```js
-var jshint = require('gulp-jshint');
-var map = require('map-stream');
+const jshint = require('gulp-jshint');
+const map = require('map-stream');
 
-var myReporter = map(function (file, cb) {
-  if (!file.jshint.success) {
-    console.log('JSHINT fail in '+file.path);
-    file.jshint.results.forEach(function (err) {
-      if (err) {
-        console.log(' '+file.path + ': line ' + err.line + ', col ' + err.character + ', code ' + err.code + ', ' + err.reason);
-      }
-    });
+const myReporter = map(function (file, cb) {
+  if (file.jshint.success) {
+    return cb(null, file);
   }
+
+  console.log('JSHINT fail in', file.path);
+  file.jshint.results.forEach(function (result) {
+    if (!result.error) {
+      return;
+    }
+
+    const err = result.error
+    console.log(`  line ${err.line}, col ${err.character}, code ${err.code}, ${err.reason}`);
+  });
+
   cb(null, file);
 });
 
@@ -175,7 +181,7 @@ gulp.task('lint', function() {
 
 ### Reporter Configuration
 
-Some reporters have options which, and you can pass them to `jshint.reporter()`. Here is an example of using verbose mode with the default JSHint reporter.
+Some reporters have options which you can pass to `jshint.reporter()`. Here is an example of using verbose mode with the default JSHint reporter.
 
 ```js
 gulp.task('lint', function() {
@@ -201,24 +207,4 @@ gulp.task('lintHTML', function() {
 
 ## LICENSE
 
-The MIT License (MIT)
-
-Copyright (c) 2015 Spencer Alger
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in
-all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-THE SOFTWARE.
+[MIT](LICENSE)
