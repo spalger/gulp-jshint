@@ -26,4 +26,5 @@ describe('gulp-jshint', function () {
   require('./linting');
   require('./reporters');
   require('./integration');
+  require('./config');
 });
