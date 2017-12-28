@@ -1,6 +1,6 @@
 var path = require('path');
 var stream = require('../stream');
-var PluginError = require('gulp-util').PluginError;
+var PluginError = require('plugin-error');
 var reduce = require('lodash/reduce');
 
 module.exports = function (opts) {

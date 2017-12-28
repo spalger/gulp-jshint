@@ -1,5 +1,5 @@
 var path = require('path');
-var PluginError = require('gulp-util').PluginError;
+var PluginError = require('plugin-error');
 var RcLoader = require('rcloader');
 var jshintcli = require('jshint/src/cli');
 var minimatch = require('minimatch');

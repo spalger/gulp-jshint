@@ -16,9 +16,9 @@
     "gulpplugin"
   ],
   "dependencies": {
-    "gulp-util": "^3.0.0",
     "lodash": "^4.12.0",
     "minimatch": "^3.0.3",
+    "plugin-error": "^0.1.2",
     "rcloader": "^0.2.2",
     "through2": "^2.0.0",
     "vinyl": "^2.1.0"

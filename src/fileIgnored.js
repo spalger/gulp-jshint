@@ -6,7 +6,7 @@ var dirname = require('path').dirname;
 var join = require('path').join;
 var sep = require('path').sep;
 var RcLoader = require('rcloader');
-var PluginError = require('gulp-util').PluginError;
+var PluginError = require('plugin-error');
 
 var ignoreLoader = new RcLoader('.jshintignore', {}, {
   loader: function (path) {
