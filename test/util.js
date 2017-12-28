@@ -1,6 +1,6 @@
 var isString = require('lodash/isString');
 var jshint = require('../');
-var gutil = require('gulp-util');
+var Vinyl = require('vinyl');
 var join = require('path').join;
 var extname = require('path').extname;
 var fs = require('fs');
@@ -22,7 +22,7 @@ function File(opts) {
     ? new Buffer(opts.contents, 'utf8')
     : fs.readFileSync(path);
 
-  return new gutil.File({
+  return new Vinyl({
     cwd: opts.cwd || ROOT,
     base: opts.base || ROOT,
     path: path,
