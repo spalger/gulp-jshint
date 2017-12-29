@@ -1,4 +1,4 @@
-var PluginError = require('gulp-util').PluginError;
+var PluginError = require('plugin-error');
 var stream = require('../stream');
 var defaults = require('lodash/defaults');
 

@@ -1,5 +1,5 @@
 var Fixture = require('../util').Fixture;
-var PluginError = require('gulp-util').PluginError;
+var PluginError = require('plugin-error');
 var jshint = require('../../src');
 
 describe('linting', function () {
