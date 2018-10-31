@@ -71,7 +71,7 @@ Plugin options:
       });
     ```
 
-You can pass in any other options and it passes them straight to JSHint. Look at their README for more info. You can also pass in the location of your jshintrc file as a string and it will load options from it.
+You can pass in any other options and it passes them straight to JSHint. Look at [JSHint's documentation](https://jshint.com/docs/options/) for more info. You can also pass in the location of your `.jshintrc` file as a string and it will load options from it.
 
 For example, to load your configuration from your `package.json` exclusively and avoid lookup overhead you can do:
 
@@ -123,7 +123,7 @@ stuff
   .pipe(jshint.reporter(stylish))
 ```
 
-- OR -
+\- OR -
 
 ```js
 stuff
