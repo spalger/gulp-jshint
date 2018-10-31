@@ -4,9 +4,11 @@ install:
   - npm install jshint
 sudo: false
 node_js:
-  - "0.10"
   - "0.12"
-  - "4.1"
+  - "4"
+  - "6"
+  - "8"
+  - "10"
 branches:
   only:
   - master
