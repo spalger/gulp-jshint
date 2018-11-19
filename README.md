@@ -191,6 +191,10 @@ gulp.task('lint', function() {
 });
 ```
 
+### Third party reporter
+
+[gulp-reporter](https://github.com/gucong3000/gulp-reporter) used in team project, it fails only when error belongs to the current author of git.
+
 ## Extract
 
 Tells JSHint to extract JavaScript from HTML files before linting (see [JSHint CLI flags](http://www.jshint.com/docs/cli/)). Keep in mind that it doesn't override the file's content after extraction. This is your tool of choice to lint web components!
